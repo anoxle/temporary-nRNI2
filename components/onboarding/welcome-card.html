@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Welcome to Anoxle Startpage</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Mochiy+Pop+One&family=Inter:wght@500;600&display=swap');
+
+  :root {
+    --bg: #1f232e;
+    --card: #252a3a;
+    --border: #32394e;
+    --text: #ffffff;
+    --muted: #9aa0b2;
+    --accent: #725de6;
+    --brand-purple: #9b62da;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    padding: 16px;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--bg);
+    background-image: 
+      radial-gradient(rgba(255, 255, 255, 0.11) 1px, transparent 1px),
+      linear-gradient(180deg, rgba(114, 93, 230, 0.09) 0%, rgba(114, 93, 230, 0) 42%);
+    background-size: 20px 20px, 100% 100%;
+    color: var(--text);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  .intro-box {
+    width: 100%;
+    max-width: 440px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 36px 28px 28px;
+    text-align: center;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.28);
+    animation: fadeIn 0.45s ease both;
+    transition: opacity 0.15s ease, transform 0.15s ease;
+  }
+
+  .intro-box.disappear {
+    opacity: 0;
+    transform: translateY(-2px);
+    pointer-events: none;
+  }
+
+  .head-txt {
+    font-family: 'Mochiy Pop One', sans-serif;
+    font-size: clamp(1.8rem, 4vw, 2.3rem);
+    margin: 0 0 12px;
+    line-height: 1.15;
+    background: linear-gradient(90deg, #7b6af0, #9b62da);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: revealUp 0.45s 0.06s both;
+  }
+
+  .sub-text {
+    margin: 0 auto 24px;
+    color: var(--muted);
+    font-size: 0.98rem;
+    line-height: 1.55;
+    animation: revealUp 0.45s 0.14s both;
+  }
+
+  .nav-btn {
+    width: 100%;
+    height: 40px;
+    padding: 0 18px;
+    font: 600 0.90rem / 1 'Inter', sans-serif;
+    color: white;
+    background: linear-gradient(90deg, var(--accent), var(--brand-purple));
+    border: 1px solid transparent;
+    border-radius: 11px;
+    cursor: pointer;
+    transition: transform 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
+    animation: revealUp 0.45s 0.22s both;
+  }
+
+  .nav-btn:hover {
+    transform: translateY(-1px);
+    background: linear-gradient(90deg, #7a6dea, #a46de2);
+    box-shadow: 0 4px 12px rgba(114, 93, 230, 0.30);
+  }
+
+  .nav-btn:active {
+    transform: scale(0.98);
+  }
+
+  .nav-btn:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--bg), 0 0 0 3px rgba(114, 93, 230, 0.6);
+  }
+
+  .hint-note {
+    margin-top: 18px;
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+    animation: revealUp 0.45s 0.28s both;
+  }
+
+  kbd {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.75rem;
+    background: #2a2f42;
+    border: 1px solid #3a425e;
+    border-radius: 4px;
+    padding: 2px 6px;
+    color: #c4c7d6;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: none; }
+  }
+
+  @keyframes revealUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: none; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="intro-box" id="introCard" role="dialog" aria-labelledby="welcome-title">
+    <h1 class="head-txt" id="welcome-title">Anoxle Startpage</h1>
+    <p class="sub-text">A new tab that’s yours to shape. Customize every detail to your liking, completely free and entirely hosted in your browser.</p>
+
+    <button id="enterBtn" class="nav-btn">Get Started</button>
+
+    <div class="hint-note">
+      Press <kbd>Preferences</kbd> or <kbd>Ctrl</kbd> + <kbd>,</kbd> to Customize
+    </div>
+  </div>
+
+  <script>
+    function closeCard(){
+      var card = document.getElementById('introCard');
+      if(window._cardClosed) return;
+      window._cardClosed = true;
+      card.classList.add('disappear');
+      
+      const storageKeys = { startpage_started: '1' };
+      storageKeys.onboarding_shown = 'true';
+      
+      for(let key in storageKeys){
+        try{
+          localStorage.setItem(key, storageKeys[key]);
+        }catch(e){}
+      }
+      
+      try{
+        if(window.parent && window.parent !== window){
+          window.parent.postMessage({type:'ANOXLE_ONBOARDING_DONE'}, '*');
+        }
+      }catch(e){}
+      setTimeout(() => {
+        try{ window.parent.document.getElementById('onboarding-overlay')?.remove(); }catch(e){}
+      }, 150);
+    }
+
+    const btn = document.getElementById('enterBtn');
+    if(btn) btn.addEventListener('click', closeCard);
+  </script>
+</body>
+</html>

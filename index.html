@@ -1,0 +1,1054 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anoxle - Startpage</title>
+    <meta name="description" content="Highly customizable. Beautifully minimal. Your personal new tab for a cleaner, more focused web.">
+    <meta property="og:title" content="Anoxle - Startpage">
+    <meta property="og:description" content="Highly customizable. Beautifully minimal. Your personal new tab for a cleaner, more focused web.">
+    <meta property="og:image" content="./assets/icon.png">
+    <meta name="theme-color" content="#9A62DA">
+    <meta name="color-scheme" content="dark">
+
+    <link rel="manifest" href="./assets/manifest.json">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Anoxle">
+    <link rel="apple-touch-icon" href="./assets/icon.png">
+    <link rel="icon" href="./assets/icon.png" type="image/png">
+
+    <link rel="preload" href="./assets/fonts/google-fonts.css" as="style">
+    <link rel="preload" href="./assets/fonts/font-awesome.css" as="style">
+    <link rel="stylesheet" href="./assets/fonts/google-fonts.css" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="./assets/fonts/font-awesome.css" media="print" onload="this.media='all'">
+    <noscript>
+      <link rel="stylesheet" href="./assets/fonts/google-fonts.css">
+      <link rel="stylesheet" href="./assets/fonts/font-awesome.css">
+    </noscript>
+
+    
+  <script type="module" crossorigin src="./assets/app.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/app.css">
+</head>
+<body>
+<div id="bg-image"></div>
+<video id="bg-video" autoplay muted loop playsinline style="position:fixed; inset:0; z-index:-2; width:100%; height:100%; object-fit:cover; display:none;"></video>
+<div id="bg-overlay"></div>
+<div id="gui-layer" class="grid-bg"></div>
+
+<div id="boot-error" class="boot-error" role="alertdialog" aria-modal="true" aria-labelledby="boot-error-title" aria-describedby="boot-error-msg">
+  <div class="boot-error-card">
+    <h2 id="boot-error-title">Couldn't load settings</h2>
+    <p id="boot-error-msg">Your saved settings could not be loaded. This usually means the browser storage is corrupted or full.</p>
+    <div class="boot-error-actions">
+      <button type="button" class="btn" id="boot-error-continue">Continue with defaults</button>
+      <button type="button" class="btn btn-primary" id="boot-error-reset">Reset everything</button>
+    </div>
+  </div>
+</div>
+
+<div id="update-banner" class="update-banner" role="status" aria-live="polite">
+  <span id="update-banner-text">Checking for updates…</span>
+  <button id="update-dismiss" type="button" class="update-dismiss" aria-label="Dismiss">✕</button>
+</div>
+
+<div id="mode-switch" class="mode-switch">
+    <div class="mmb-track">
+        <div class="mmb-slider-bg" id="mmb-slider"></div>
+        <button class="mmb-btn active" id="mmb-search">Search</button>
+        <button class="mmb-btn" id="mmb-ask">Ask</button>
+    </div>
+</div>
+
+<div id="hud-bar" class="hud-bar">
+ <button class="hud-btn" id="btn-move-mode">Move Tool</button>
+ <button class="hud-btn" id="btn-preview">Preview</button>
+ <div class="hud-divider"></div>
+ <label class="hud-snap">
+  <input type="checkbox" id="chk-snap-gui">
+  <span class="hud-snap-slider"></span>
+  <span>SNAP</span>
+ </label>
+ <div class="hud-divider"></div>
+ <button class="hud-btn hud-btn-ghost" id="btn-cancel-pos">Cancel</button>
+ <button class="hud-btn hud-btn-primary" id="btn-save-pos">Save</button>
+</div>
+<div id="hud-hint" class="hud-hint">Select an element to use Move Tool</div>
+
+<div id="preview-exit" style="display:none; position:fixed; top:16px; left:50%; transform:translateX(-50%); z-index:150; background:var(--overlay); border:1px solid var(--border); border-radius:8px; padding:4px;">
+    <button class="hud-btn hud-btn-primary" id="btn-exit-preview">Exit Preview</button>
+</div>
+
+<button id="studio-sheet-toggle" class="studio-sheet-toggle" aria-label="Toggle settings panel">
+  <i class="fa-solid fa-sliders"></i><span>Settings</span>
+</button>
+
+<div id="mobile-edit-bar">
+    <button id="m-btn-menu" class="btn mem-btn" aria-label="Menu"><i class="fa-solid fa-bars"></i></button>
+    <div id="mobile-edit-menu">
+        <button id="m-btn-move" class="btn mem-btn" title="Move Tool"><i class="fa-solid fa-arrows-up-down-left-right"></i></button>
+        <button id="m-btn-snap" class="btn mem-btn" title="Snap to Grid"><i class="fa-solid fa-table-cells"></i></button>
+        <button id="m-btn-preview" class="btn mem-btn" title="Preview"><i class="fa-solid fa-eye"></i></button>
+        <button id="m-btn-bgpos" class="btn mem-btn" title="Background Position"><i class="fa-solid fa-image"></i></button>
+        <button id="m-btn-save" class="btn mem-btn" title="Save"><i class="fa-solid fa-floppy-disk"></i></button>
+        <button id="m-btn-cancel" class="btn mem-btn" title="Exit"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+</div>
+<div id="gui-mob-ctrl" class="mobile-controls">
+    <div class="mob-ctrl-title">Change background position</div>
+    <div class="flex-row" style="margin:0"><label style="width:20px">X</label><input type="range" id="mob-bg-x" min="0" max="100"></div>
+    <div class="flex-row" style="margin:0"><label style="width:20px">Y</label><input type="range" id="mob-bg-y" min="0" max="100"></div>
+</div>
+
+<div id="widget-box" class="drag-box widget-wrap preset-basic">
+ <div class="sizer bar size-s" data-handle="size-widget-s"></div><div class="sizer bar size-n" data-handle="size-widget-n"></div>
+ <div class="sizer circle size-e" data-handle="size-widget-e"></div><div class="sizer circle size-w" data-handle="size-widget-w"></div>
+ <div class="move-handle up" data-dir="up"></div><div class="move-handle down" data-dir="down"></div><div class="move-handle left" data-dir="left"></div><div class="move-handle right" data-dir="right"></div>
+ <div id="clock-root">
+  <div id="greet-display" class="widget-greet"></div>
+  <div id="clock-display" class="widget-time">00:00</div>
+  <div id="word-clock"></div>
+  <div id="date-display" class="widget-date"></div>
+ </div>
+</div>
+
+<div id="search-box" class="drag-box search-wrap">
+ <div class="sizer circle size-e" data-handle="size-search-e"></div><div class="sizer circle size-w" data-handle="size-search-w"></div>
+ <div class="sizer bar size-s" data-handle="size-search-s"></div><div class="sizer bar size-n" data-handle="size-search-n"></div>
+ <div class="move-handle up" data-dir="up"></div><div class="move-handle down" data-dir="down"></div><div class="move-handle left" data-dir="left"></div><div class="move-handle right" data-dir="right"></div>
+ <form id="form-search" style="width:100%; height:100%;">
+  <div class="input-wrap" id="input-wrap">
+   <div id="compact-ask-toggle">
+    <button type="button" id="c-btn-search" class="c-ask-btn active">Search</button>
+    <button type="button" id="c-btn-ask" class="c-ask-btn">Ask</button>
+   </div>
+   <div id="chip-active" class="search-tag"></div>
+  <div id="hint-text" class="ghost-hint"></div>
+   <input type="search" id="input-query" class="search-bar" name="q" placeholder="Ask anything..." autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false" inputmode="search" enterkeyhint="search">
+   <span id="typing-caret"></span>
+   <div id="engine-toggle" class="engine-toggle"><span>AUTO</span></div>
+   <button type="submit" id="go-arrow" class="go-arrow"><i class="fa-solid fa-arrow-right"></i></button>
+  </div>
+ </form>
+</div>
+
+<div id="ql-box" class="drag-box ql-wrap">
+ <div class="sizer circle size-e" data-handle="size-ql-e"></div><div class="sizer circle size-w" data-handle="size-ql-w"></div>
+ <div class="move-handle up" data-dir="up"></div><div class="move-handle down" data-dir="down"></div><div class="move-handle left" data-dir="left"></div><div class="move-handle right" data-dir="right"></div>
+ <div id="ql-area" class="quick-links"></div>
+</div>
+
+<div id="foot-bar" class="foot-bar">
+ <button class="btn" id="btn-prefs"><i class="fa-solid fa-gear"></i><span class="pref-text"> Preferences</span></button>
+ <div style="display:flex; gap:8px; align-items:center">
+  <div id="help-bar" class="keys-info"> <kbd>ctrl+,</kbd> prefs • <kbd>/</kbd> focus • <kbd>esc</kbd> close • <kbd id="lbl-ai-key">alt+a</kbd> ai • <kbd id="lbl-force-key">Tab</kbd> toggle </div>
+ </div>
+</div>
+
+<div id="modal-settings" class="modal-overlay">
+ <div class="modal-box">
+  <div class="tabs-col" id="tab-nav">
+   <div class="tab-btn active" data-tab="tab-gen"><i class="fa-solid fa-house fa-fw"></i> General</div>
+   <div class="tab-btn" data-tab="tab-app"><i class="fa-solid fa-palette fa-fw"></i> Appearance</div>
+   <div class="tab-btn" data-tab="tab-workspace"><i class="fa-solid fa-table-cells-large fa-fw"></i> Layout</div>
+   <div class="tab-btn" data-tab="tab-search"><i class="fa-solid fa-magnifying-glass fa-fw"></i> Search</div>
+   <div class="tab-btn" data-tab="tab-wid"><i class="fa-solid fa-grip fa-fw"></i> Widgets & Links</div>
+   <div class="tab-btn" data-tab="tab-short"><i class="fa-solid fa-keyboard fa-fw"></i> Atts & Shortcuts</div>
+   <div class="tab-btn" data-tab="tab-data"><i class="fa-solid fa-database fa-fw"></i> Data &amp; Version</div>
+   <hr style="border-color:#52525e; margin:8px 24px; width:calc(100% - 48px);">
+   <div class="tab-btn" data-tab="tab-advanced"><i class="fa-solid fa-flask fa-fw"></i> Advanced</div>
+  </div>
+
+  <div style="overflow-y:auto; background:#1c1b22">
+   <div class="tab-pane show" id="tab-gen">
+    <div class="set-card">
+     <label class="set-label">Behavior</label>
+     <div class="toggle-row"><span>Hide Help Bar</span><label class="switch"><input type="checkbox" id="pref-hidehelp"><span class="slider"></span></label></div>
+    <div class="toggle-row"><span id="lbl-hidepref">Hide Preferences Button</span><label class="switch"><input type="checkbox" id="pref-hidepref"><span class="slider"></span></label></div>
+     <div class="toggle-row"><span>Auto Focus Search on Load</span><label class="switch"><input type="checkbox" id="pref-autofocus"><span class="slider"></span></label></div>
+     <div class="toggle-row"><span>Open searches in new tab</span><label class="switch"><input type="checkbox" id="pref-searchnewtab"><span class="slider"></span></label></div>
+     <div class="toggle-row"><span>Open quick links in new tab</span><label class="switch"><input type="checkbox" id="pref-linksnewtab"><span class="slider"></span></label></div>
+    </div>
+    <div class="set-card">
+     <label class="set-label">Tab Settings</label>
+     <div class="grid-2">
+      <div><span class="field-label">Custom Tab Title</span><div class="flex-row"><input type="text" id="pref-tabname" placeholder="New Tab"><button class="btn" data-action="resetTabName">Reset</button></div></div>
+      <div><span class="field-label">Custom Tab Icon URL</span><div class="flex-row"><input type="text" id="pref-tabicon" placeholder="Favicon URL"><button class="btn" data-action="resetTabIcon">Reset</button></div></div>
+     </div>
+    </div>
+   </div>
+
+   <div class="tab-pane" id="tab-search">
+   <div class="set-card">
+    <label class="set-label">Search Engine</label>
+    <span class="field-label">Default Search Provider</span>
+    <div id="pref-engine-list"></div>
+     <div id="box-cust-engine-wrapper" style="display:none; margin-top:6px;"><span class="field-label">Custom Search URL (%s = query)</span><input type="text" id="pref-custengine" placeholder="https://example.com/search?q=%s"></div>
+     <p style="font-size:.75rem; color:var(--hint); margin:8px 0 0; line-height:1.4;">Force Search Key is configured in <span class="tab-jump" data-tab="tab-short" data-hl="sc-input-toggle">Atts &amp; Shortcuts → Shortcuts</span> as <em>Toggle Force Search</em>.</p>
+    </div>
+   <div class="set-card">
+    <label class="set-label">AI Search</label>
+    <div class="toggle-row"><span>Enable AI Search</span><label class="switch"><input type="checkbox" id="pref-useai"><span class="slider"></span></label></div>
+    <div id="box-ai" style="margin-top:12px; display:none;">
+       <span class="field-label">AI Platform Source</span>
+       <select id="pref-ai-mode" style="width:100%; margin-bottom:10px;">
+           <option value="builtin">Built-in AI Platforms</option>
+           <option value="custom">Custom AI Platform</option>
+       </select>
+       <div id="box-ai-builtin">
+          <div class="ai-platform-row" data-url="https://search.brave.com/ask?q={query}">
+             <div class="ai-platform-name">
+                <span>Brave Leo</span>
+                <span class="ai-badge recommended">Recommended</span>
+                <span class="ai-badge privacy">Privacy-Focused</span>
+                <button type="button" class="ai-info-btn" data-tip="Privacy-focused AI assistant by Brave. Good for quick searches with live web results; does not train on your data.">i</button>
+             </div>
+             <span class="ai-check"><i class="fa-solid fa-check"></i></span>
+          </div>
+          <div class="ai-platform-row" data-url="https://claude.ai/new?q=%s">
+             <div class="ai-platform-name">
+                <span>Claude</span>
+                <span class="ai-badge popular">Popular</span>
+                <button type="button" class="ai-info-btn" data-tip="Anthropic's assistant. Best for longer writing, reasoning and coding tasks; not built for web search.">i</button>
+             </div>
+             <span class="ai-check"><i class="fa-solid fa-check"></i></span>
+          </div>
+          <div class="ai-platform-row" data-url="https://www.perplexity.ai/search?q=%s">
+             <div class="ai-platform-name">
+                <span>Perplexity</span>
+                <button type="button" class="ai-info-btn" data-tip="AI search engine. Best for research and questions needing cited web sources.">i</button>
+             </div>
+             <span class="ai-check"><i class="fa-solid fa-check"></i></span>
+          </div>
+          <div class="ai-platform-row" data-url="https://chatgpt.com/?q=%s">
+             <div class="ai-platform-name">
+                <span>ChatGPT</span>
+                <button type="button" class="ai-info-btn" data-tip="OpenAI's assistant. Good for general questions, writing and everyday tasks, with web search built in.">i</button>
+             </div>
+             <span class="ai-check"><i class="fa-solid fa-check"></i></span>
+          </div>
+       </div>
+       <div id="box-cust-ai-wrapper" style="display:none; margin-top:6px;">
+           <span class="field-label">Custom AI URL</span>
+           <input type="text" id="pref-custaiurl" placeholder="https://custom-ai.com/chat?q={query}">
+           <p style="font-size:.75rem; color:var(--hint); margin:4px 0 0; line-height:1.4;">Where the query should be add {query} or %s or {msg}</p>
+       </div>
+       <div style="margin-top:14px;">
+          <span class="field-label">Shortcut Key</span>
+          <p style="font-size:.75rem; color:var(--hint); margin:4px 0 0; line-height:1.4;">Configure this in <span class="tab-jump" data-tab="tab-short" data-hl="sc-input-ai-platform">Atts &amp; Shortcuts → Shortcuts</span> as <em>AI Platform</em>.</p>
+       </div>
+    </div>
+   </div>
+    <div class="set-card">
+     <label class="set-label">Autocomplete Favorites</label>
+     <span class="field-label">URL to autocomplete in search box</span>
+     <div class="flex-row">
+        <input type="text" id="inp-fav" placeholder="example.com">
+        <button class="text-add-btn" data-action="addFav">Add</button>
+     </div>
+     <div id="list-fav" class="list-wrap" style="max-height:300px; margin-top:12px;"></div>
+    </div>
+   </div>
+
+   <div class="tab-pane" id="tab-app">
+    <p style="font-size:.82rem; color:#a1a1aa; line-height:1.5; margin:0 0 14px 2px;">Need to change how a specific element looks? Use <span class="tab-jump" data-tab="tab-wid">Widgets &amp; Links</span> to open its studio. This tab only handles the global theme and background.</p>
+    <div class="set-card">
+     <label class="set-label">Theme & Background</label>
+     <div class="grid-2">
+      <div><span class="field-label">Color Preset</span><select id="pref-theme"><option value="theme-overcast">Overcast</option><option value="theme-mocha" disabled>Catppuccin Mocha</option><option value="theme-dark" disabled>Dark</option><option value="theme-black" disabled>OLED Black</option><option value="theme-light" disabled>Light</option><option value="theme-modern" disabled>Modern Clean</option><option value="theme-custom">Custom Colors</option></select></div>
+      <div><span class="field-label">Accent Color</span><div class="flex-row"><input type="text" id="pref-accent" placeholder="#cba6f7" style="flex:1; min-width:0"><input type="color" id="pref-accent-picker" value="#9A62DA" style="width:38px; height:38px; padding:2px; flex-shrink:0"></div></div>
+     </div>
+     <div id="box-custom" class="grid-4" style="display:none; margin-top:14px;">
+        <div><span class="set-sublabel">BG</span><div class="flex-row"><input type="text" id="pref-c-bg" style="flex:1; min-width:0"><input type="color" id="pref-c-bg-picker" value="#0a0a0a" style="width:36px; height:38px; padding:2px; flex-shrink:0"></div></div>
+        <div><span class="set-sublabel">Text</span><div class="flex-row"><input type="text" id="pref-c-txt" style="flex:1; min-width:0"><input type="color" id="pref-c-txt-picker" value="#ffffff" style="width:36px; height:38px; padding:2px; flex-shrink:0"></div></div>
+        <div><span class="set-sublabel">Accent</span><div class="flex-row"><input type="text" id="pref-c-acc" style="flex:1; min-width:0"><input type="color" id="pref-c-acc-picker" value="#9A62DA" style="width:36px; height:38px; padding:2px; flex-shrink:0"></div></div>
+        <div><span class="set-sublabel">Border</span><div class="flex-row"><input type="text" id="pref-c-bor" style="flex:1; min-width:0"><input type="color" id="pref-c-bor-picker" value="#1a1a1a" style="width:36px; height:38px; padding:2px; flex-shrink:0"></div></div>
+     </div>
+     <div class="grid-2" style="margin-top:14px">
+      <div><span class="field-label">Background Image URL</span><input type="text" id="pref-bgurl" placeholder="https://..."></div>
+     <div><span class="field-label">Background Type</span><select id="pref-bgtype"><option value="url">URL</option><option value="upload">Upload Image</option><option value="video">Upload Video</option></select><input type="file" id="pref-bgfile" accept="image/*,video/*" style="margin-top:8px; display:none"><p id="vid-warn" style="font-size:.75rem; color:#facc15; margin-top:6px; display:none;">Videos may cause lag on low-end devices.</p></div>
+     </div>
+     <div class="grid-2" style="margin-top:14px">
+      <div><div class="range-row"><div class="range-top"><span class="set-sublabel" style="margin:0">Blur</span><span class="range-val" id="val-bgblur">0px</span></div><input type="range" id="pref-bgblur" min="0" max="20" step="1"></div></div>
+      <div><div class="range-row"><div class="range-top"><span class="set-sublabel" style="margin:0">Dark Overlay</span><span class="range-val" id="val-bgdark">0%</span></div><input type="range" id="pref-bgdark" min="0" max="80" step="1"></div></div>
+     </div>
+    </div>
+    <div class="set-card mobile-only">
+     <label class="set-label">Mode Switcher</label>
+     <div class="toggle-row"><span>Enable Mode Switcher</span><label class="switch"><input type="checkbox" id="pref-ms-enable"><span class="slider"></span></label></div>
+     <div id="box-ms" style="margin-top:12px;">
+      <div class="range-row"><div class="range-top"><span class="set-sublabel" style="margin:0">Size</span><div style="display:flex; align-items:center; gap:8px;"><button type="button" id="btn-ms-size-reset" style="background:transparent; border:none; color:var(--subtext); font-size:.7rem; font-weight:600; letter-spacing:.06em; text-transform:uppercase; cursor:pointer; padding:2px 4px; font-family:inherit;">Reset</button><span class="range-val" id="val-ms-size">100%</span></div></div><input type="range" id="pref-ms-size" min="50" max="200" step="5"></div>
+      <div style="margin-top:8px">
+       <span class="set-sublabel">Position</span>
+       <select id="pref-ms-pos"><option value="top">Top</option><option value="bottom">Bottom</option></select>
+      </div>
+      <div id="box-ms-colors" class="grid-2" style="margin-top:12px">
+       <div><span class="set-sublabel">Background</span><div class="flex-row"><input type="text" id="pref-ms-bg" placeholder="rgba(...) or #..." style="flex:1; min-width:0"><input type="color" id="pref-ms-bg-picker" style="width:38px; height:38px; padding:2px; flex-shrink:0"></div></div>
+       <div><span class="set-sublabel">Text Color</span><div class="flex-row"><input type="text" id="pref-ms-text" placeholder="#a6adc8" style="flex:1; min-width:0"><input type="color" id="pref-ms-text-picker" style="width:38px; height:38px; padding:2px; flex-shrink:0"></div></div>
+       <div><span class="set-sublabel">Active Color</span><div class="flex-row"><input type="text" id="pref-ms-active" placeholder="#cba6f7" style="flex:1; min-width:0"><input type="color" id="pref-ms-active-picker" style="width:38px; height:38px; padding:2px; flex-shrink:0"></div></div>
+      </div>
+     </div>
+    </div>
+    <div class="set-card">
+     <label class="set-label">Search Box Style</label>
+     <button class="btn btn-primary btn-full" id="btn-customize-search-appearance"><i class="fa-solid fa-sliders"></i> Customize</button>
+    </div>
+    <div class="set-card">
+     <label class="set-label">Tip Bar Style</label>
+     <span class="set-sublabel" style="margin-top:-4px; margin-bottom:12px;">Style the keyboard shortcuts hint at the bottom of the page.</span>
+     <div class="preset-cards" id="help-bar-preset-cards"></div>
+    </div>
+   </div>
+
+   <div class="tab-pane" id="tab-workspace">
+    <div class="set-card">
+     <label class="set-label">Visual Editor</label>
+     <p style="font-size:.88rem; color:#a1a1aa; line-height:1.5; margin:0 0 14px">Drag and resize any widget. Click a widget to select it. For deeper customization, use the <span class="tab-jump" data-tab="tab-wid">dedicated Studios</span>, where you can fine-tune every detail of each widget.</p>
+     <p class="mobile-only" style="font-size:.82rem; color:var(--hint); line-height:1.5; margin:0 0 14px;">In Layout mode, the editor buttons are hidden inside the ☰ (three-line) menu button.</p>
+     <div class="toggle-row"><span>Snap to Grid</span><label class="switch"><input type="checkbox" id="pref-snap"><span class="slider"></span></label></div>
+     <div style="display:flex; flex-direction:column; gap:10px; margin-top:12px;"><button class="btn btn-primary btn-full" id="btn-enter-gui"><i class="fa-solid fa-arrows-up-down-left-right"></i> Enter Visual Editor</button><button class="btn" id="btn-reset-layout">Reset Positions</button></div>
+    </div>
+   </div>
+
+   <div class="tab-pane" id="tab-wid">
+    <div class="set-card">
+     <label class="set-label"><i class="fa-regular fa-clock"></i> Clock</label>
+     <div class="toggle-row"><span>Show Clock</span><label class="switch"><input type="checkbox" id="pref-clock-show"><span class="slider"></span></label></div>
+     <button class="btn btn-primary btn-full" id="btn-open-clock-studio" style="margin-top:12px;"><i class="fa-solid fa-up-right-from-square"></i> Customize in Studio</button>
+    </div>
+
+    <div class="set-card">
+     <label class="set-label"><i class="fa-solid fa-magnifying-glass"></i> Search Box</label>
+     <div class="toggle-row"><span>Show Search Box</span><label class="switch"><input type="checkbox" id="pref-search-show"><span class="slider"></span></label></div>
+     <button class="btn btn-primary btn-full" id="btn-open-search-studio" style="margin-top:12px;"><i class="fa-solid fa-up-right-from-square"></i> Customize in Studio</button>
+    </div>
+
+    <div class="set-card">
+     <label class="set-label"><i class="fa-solid fa-grip"></i> Quick Links</label>
+     <div class="toggle-row"><span>Show Quick Links</span><label class="switch"><input type="checkbox" id="pref-ql-show"><span class="slider"></span></label></div>
+     <div class="toggle-row"><span>Open in new tab</span><label class="switch"><input type="checkbox" id="pref-ql-newtab"><span class="slider"></span></label></div>
+     <div id="ql-manage-mini" style="margin-top:12px; max-height:220px; overflow-y:auto; display:flex; flex-direction:column; gap:8px"></div>
+     <div class="flex-row" style="margin-top:10px"><input type="text" id="inp-ql-name-mini" placeholder="Name"><input type="text" id="inp-ql-url-mini" placeholder="https://"><button class="btn btn-primary" id="btn-add-ql-mini">Add</button></div>
+     <button class="btn btn-primary btn-full" id="btn-open-links-studio" style="margin-top:12px;"><i class="fa-solid fa-up-right-from-square"></i> Customize in Studio</button>
+    </div>
+   </div>
+
+   <div class="tab-pane" id="tab-short">
+    <div class="set-card">
+     <label class="set-label">Atts (@key)</label>
+     <p style="font-size:.85rem; color:var(--subtext); margin-top:-8px; margin-bottom:16px;">Type @ followed by your key in the search bar to quickly swap search engines or open links.</p>
+     <div class="toggle-row"><span>Enable Custom Shortcuts</span><label class="switch"><input type="checkbox" id="pref-useatts"><span class="slider"></span></label></div>
+     <div id="box-atts" style="display:none; margin-top:16px;">
+     <div id="list-grps" class="list-wrap" style="max-height:400px"></div>
+     <button class="text-add-btn" data-action="addGrp" style="margin-top:8px;">+ Add Group</button>
+     <p style="font-size:.75rem; color:var(--hint); margin:10px 2px 0; line-height:1.4;">Where the query should be add {query} or %s or {msg}</p>
+     </div>
+    </div>
+    <div class="set-card">
+     <label class="set-label">Shortcuts</label>
+     <p style="font-size:.85rem; color:var(--subtext); margin-top:-8px; margin-bottom:10px;">Global keybinds for built-in actions. Click a field, then press your key combination. Press Escape to clear.</p>
+     <div class="kb-row"><span>Focus Search</span><input type="text" id="sc-input-focus-search" class="kb-input" readonly placeholder="Default: /"></div>
+     <div class="kb-row"><span>Open Settings</span><input type="text" id="sc-input-open-settings" class="kb-input" readonly placeholder="Default: ctrl+,"></div>
+     <div class="kb-row"><span>AI Platform</span><input type="text" id="sc-input-ai-platform" class="kb-input" readonly placeholder="Default: alt+a"></div>
+     <div class="kb-row"><span>Toggle Force Search</span><input type="text" id="sc-input-toggle" class="kb-input" readonly placeholder="Default: tab"></div>
+     <div id="sc-conflicts" style="font-size:.78rem; color:#ef4444; margin-top:10px; line-height:1.4;"></div>
+    </div>
+    <div class="set-card">
+     <label class="set-label">Quick Links Shortcuts</label>
+     <p style="font-size:.85rem; color:var(--subtext); margin-top:-8px; margin-bottom:14px;">Give each of your quick links its own keybind.</p>
+     <button class="btn btn-primary btn-full" id="btn-open-ql-shortcuts"><i class="fa-solid fa-keyboard"></i> Adjust Quick Links Shortcut Keys</button>
+    </div>
+   </div>
+
+   <div class="tab-pane" id="tab-data">
+    <div class="set-card">
+     <label class="set-label">Data</label>
+     <div class="grid-2">
+        <button class="btn" id="btn-exp">Export</button>
+        <button class="btn" id="btn-imp">Import</button>
+     </div>
+     <div style="margin-top:16px"><button class="btn btn-danger btn-full" id="btn-rst">Reset All Defaults</button></div>
+     <input type="file" id="file-imp" style="display:none" accept=".json">
+    </div>
+    <div class="set-card">
+     <label class="set-label">Version Management</label>
+     <div class="toggle-row"><span>Current version</span><span id="vm-current" style="font-family:ui-monospace,monospace; font-size:.82rem; color:var(--subtext);">—</span></div>
+     <div class="toggle-row"><span>Latest version</span><span id="vm-latest" style="font-family:ui-monospace,monospace; font-size:.82rem; color:var(--subtext);">—</span></div>
+     <div class="toggle-row"><span>Status</span><span id="vm-status" style="font-size:.82rem; color:var(--subtext); text-align:right; max-width:220px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">Idle</span></div>
+     <div style="display:flex; gap:8px; margin-top:14px;">
+      <button class="btn" id="vm-check" style="flex:1;"><i class="fa-solid fa-rotate"></i> Check now</button>
+      <button class="btn btn-danger" id="vm-force" style="flex:1;" title="Resets everything to defaults: settings, uploads, custom fonts, and offline cache."><i class="fa-solid fa-broom"></i> Force reinstall</button>
+     </div>
+    </div>
+   </div>
+
+   <div class="tab-pane" id="tab-advanced">
+    <div class="set-card">
+     <label class="set-label">Quick Links Icons</label>
+     <span class="field-label">Quick Links Icons API</span>
+     <select id="pref-iconapi">
+        <option value="google">Google (Recommended)</option>
+        <option value="ddg">DuckDuckGo</option>
+     </select>
+     <span class="set-sublabel" style="margin-top:10px;">Choose the service used to automatically fetch site icons when left empty.</span>
+     <div class="toggle-row" style="margin-top:12px;">
+        <span id="fallback-label">Use DuckDuckGo API as a fallback if Google doesn't work</span>
+        <label class="switch"><input type="checkbox" id="pref-iconapi-fallback" checked><span class="slider"></span></label>
+     </div>
+    </div>
+
+   </div>
+  </div>
+
+  <div class="modal-bottom">
+   <div style="display:flex; gap:8px; margin-left:auto"><button class="btn" id="btn-close-modal">Cancel</button><button class="btn btn-primary" id="btn-save-modal">Save</button></div>
+  </div>
+ </div>
+</div>
+
+<div id="modal-confirm" class="modal-overlay">
+    <div class="modal-box" style="width:400px; height:auto; padding:24px; display:block; grid-template-columns:none;">
+        <h3 id="conf-title" style="margin:0 0 12px; font-size:1.2rem; color:var(--text)">Confirm</h3>
+        <p id="conf-msg" style="margin:0 0 24px; color:var(--subtext); font-size:.95rem"></p>
+        <div style="display:flex; justify-content:flex-end; gap:12px;">
+            <button class="btn" id="btn-conf-no">Cancel</button>
+            <button class="btn btn-primary" id="btn-conf-yes">Confirm</button>
+        </div>
+    </div>
+</div>
+
+<div id="modal-switch-prompt" class="modal-overlay">
+    <div class="modal-box" style="width:420px; height:auto; padding:24px; display:block; grid-template-columns:none;">
+        <h3 style="margin:0 0 12px; font-size:1.05rem; color:var(--text)">Switch Studio?</h3>
+        <p style="margin:0 0 20px; color:var(--subtext); font-size:.88rem">Save current changes before switching?</p>
+        <div style="display:flex; justify-content:flex-end; gap:8px;">
+            <button class="btn" id="btn-sw-cancel">Cancel</button>
+            <button class="btn" id="btn-sw-discard">Don't Save</button>
+            <button class="btn btn-primary" id="btn-sw-save">Save</button>
+        </div>
+    </div>
+</div>
+
+<div id="modal-ql-shortcuts" class="modal-overlay">
+    <div class="modal-box" style="width:560px; max-width:94vw; height:auto; max-height:80vh; padding:0; display:flex; flex-direction:column; grid-template-columns:none;">
+        <div style="padding:18px 22px; border-bottom:1px solid #302f38; display:flex; justify-content:space-between; align-items:center;">
+            <div style="font-weight:600; font-size:1rem; color:#fbfbfe;">Quick Links Shortcut Keys</div>
+            <button class="btn" id="btn-close-ql-shortcuts" style="padding:6px 10px;"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <p style="padding:0 22px; margin:14px 0 0; font-size:.8rem; color:#a1a1aa; line-height:1.4;">Click a field and press your key combination. Press Escape to clear a shortcut.</p>
+        <div id="ql-shortcuts-list" style="padding:14px 22px 18px; overflow-y:auto; flex:1; display:flex; flex-direction:column; gap:8px;"></div>
+        <div id="qlsc-conflicts" style="padding:0 22px 12px; font-size:.78rem; color:#ef4444; line-height:1.4;"></div>
+        <div style="padding:14px 22px; border-top:1px solid #302f38; display:flex; justify-content:flex-end;">
+            <button class="btn btn-primary" id="btn-save-ql-shortcuts">Done</button>
+        </div>
+    </div>
+</div>
+
+<div id="studio-clock" class="studio-view">
+ <div class="studio-preview">
+  <div id="studio-clock-bg" class="studio-preview-bg"></div>
+  <div id="studio-clock-overlay" class="studio-preview-overlay"></div>
+  <div class="studio-topbar">
+   <div class="studio-tabs">
+    <button class="studio-tab" data-studio="studio-clock">Clock</button>
+    <button class="studio-tab" data-studio="studio-search">Search</button>
+    <button class="studio-tab" data-studio="studio-links">Links</button>
+   </div>
+   <div style="display:flex; gap:8px; align-items:center;">
+    <button class="btn btn-studio-preview">Preview Fullscreen</button>
+    <button class="btn btn-studio-preview-live">Preview &amp; Edit</button>
+    <button class="btn" id="studio-clock-close">Done</button>
+   </div>
+  </div>
+  <div id="studio-clock-mount" style="transform:scale(var(--clock-scale)); text-align:center;"></div>
+ </div>
+ <div class="studio-side">
+  <div class="studio-side-header">
+   <div style="font-weight:600; color:var(--text); font-size:1.05rem">Clock Settings</div>
+   <div style="display:flex; align-items:center; gap:6px;">
+    <select class="studio-live-switcher" data-current="studio-clock">
+     <option value="studio-clock">Clock</option>
+     <option value="studio-search">Search</option>
+     <option value="studio-links">Links</option>
+    </select>
+    <select class="studio-sheet-pos" title="Settings panel position">
+     <option value="bottom">Panel: Bottom</option>
+     <option value="top">Panel: Top</option>
+    </select>
+    <button class="btn studio-save-exit-btn" data-save-exit="studio-clock">Save</button>
+    <button class="btn studio-desktop-revert" data-revert-studio="studio-clock" title="Revert changes"><i class="fa-solid fa-rotate-left"></i></button>
+    <button class="btn studio-mobile-action studio-mobile-revert" data-revert-studio="studio-clock" title="Revert changes"><i class="fa-solid fa-rotate-left"></i></button>
+    <button class="btn btn-primary studio-mobile-action studio-mobile-save" data-save-exit="studio-clock" title="Save & Close"><i class="fa-solid fa-check"></i></button>
+    <button class="btn" id="studio-clock-close2" style="padding:6px 10px"><i class="fa-solid fa-xmark"></i></button>
+   </div>
+  </div>
+  <div class="studio-side-body">
+   <div class="set-card">
+    <label class="set-label"><i class="fa-solid fa-layer-group"></i> Clock Style</label>
+    <div class="preset-cards" id="studio-clock-preset-cards"></div>
+   </div>
+   <div class="set-card">
+    <label class="set-label"><i class="fa-solid fa-sliders"></i> Functionality</label>
+    <div class="check-row"><input type="checkbox" id="studio-chk-date"><label for="studio-chk-date">Show date</label></div>
+    <div class="check-row"><input type="checkbox" id="studio-chk-24h"><label for="studio-chk-24h">Show in 24h format</label></div>
+    <div class="check-row"><input type="checkbox" id="studio-chk-seconds"><label for="studio-chk-seconds">Show seconds</label></div>
+    <div class="check-row"><input type="checkbox" id="studio-chk-greet"><label for="studio-chk-greet">Show greeting</label></div>
+    <div class="check-row"><input type="checkbox" id="studio-chk-blink"><label for="studio-chk-blink">Show blinking : animation</label></div>
+   </div>
+   <div class="set-card">
+    <label class="set-label"><i class="fa-solid fa-arrows-up-down-left-right"></i> Size & Layout</label>
+    <div class="range-row"><div class="range-top"><span class="set-sublabel" style="margin:0">Size</span><span class="range-val" id="val-sclock-scale">100%</span></div><input type="range" id="pref-sclock-scale" min="50" max="250" step="5"></div>
+    <div class="range-row"><div class="range-top"><span class="set-sublabel" style="margin:0">Letter Spacing</span><span class="range-val" id="val-sclock-spacing">-2px</span></div><input type="range" id="pref-sclock-spacing" min="-10" max="20" step="1"></div>
+    <div class="range-row"><div class="range-top"><span class="set-sublabel" style="margin:0">Greeting → Time Gap</span><span class="range-val" id="val-sclock-gap-greet">8px</span></div><input type="range" id="pref-sclock-gap-greet" min="0" max="60" step="1"></div>
+    <div class="range-row"><div class="range-top"><span class="set-sublabel" style="margin:0">Time → Date Gap</span><span class="range-val" id="val-sclock-gap-date">8px</span></div><input type="range" id="pref-sclock-gap-date" min="0" max="60" step="1"></div>
+    <div class="range-row" id="row-sclock-gap-stacked" style="display:none;"><div class="range-top"><span class="set-sublabel" style="margin:0">Stacked Rows Gap</span><span class="range-val" id="val-sclock-gap-stacked">6px</span></div><input type="range" id="pref-sclock-gap-stacked" min="0" max="40" step="1"></div>
+    <div class="range-row" id="row-sclock-gap-word" style="display:none;"><div class="range-top"><span class="set-sublabel" style="margin:0">Word Clock Gap</span><span class="range-val" id="val-sclock-gap-word">12px</span></div><input type="range" id="pref-sclock-gap-word" min="0" max="40" step="1"></div>
+   </div>
+   <div class="set-card">
+    <label class="set-label"><i class="fa-solid fa-palette"></i> Styling & Effects</label>
+    <div style="margin-top:4px">
+     <span class="set-sublabel">Alignment</span><select id="pref-sclock-align"><option value="center">Center</option><option value="left">Left</option><option value="right">Right</option></select>
+    </div>
+    <div id="box-sclock-date-options" style="margin-top:10px">
+     <span class="set-sublabel">Date Format</span><select id="pref-sclock-datefmt"><option value="full">Full</option><option value="short">Short</option><option value="minimal">Minimal</option></select>
+     <div style="margin-top:10px">
+      <span class="set-sublabel">Date Text Color</span>
+      <div class="flex-row">
+       <input type="text" id="pref-sclock-datecolor" placeholder="e.g. #a6adc8 or var(--subtext)" style="flex:1">
+       <input type="color" id="pref-sclock-datecolor-picker" value="#a6adc8" style="width:42px; height:38px; padding:4px">
+      </div>
+     </div>
+    </div>
+    <div id="box-stacked-opts" style="display:none; margin-top:12px">
+     <div class="check-row"><input type="checkbox" id="pref-sclock-stackedlbls"><label for="pref-sclock-stackedlbls">Show time labels (Hrs, Min, Sec)</label></div>
+     <div class="flex-row" style="margin-top:8px">
+      <input type="text" id="pref-sclock-stackedcolor" placeholder="Label color (e.g. #cba6f7)" style="flex:1">
+      <input type="color" id="pref-sclock-stackedcolor-picker" value="#cba6f7" style="width:42px; height:38px; padding:4px">
+     </div>
+    </div>
+    <div style="margin-top:12px">
+     <span class="set-sublabel">Clock Text Color</span>
+     <div class="flex-row">
+      <input type="text" id="pref-sclock-color" placeholder="e.g. #cdd6f4 or var(--text)" style="flex:1">
+      <input type="color" id="pref-sclock-color-picker" value="#cdd6f4" style="width:42px; height:38px; padding:4px">
+     </div>
+    </div>
+    <div style="margin-top:10px">
+     <span class="set-sublabel">Greeting Text Color</span>
+     <div class="flex-row">
+      <input type="text" id="pref-sclock-greetcolor" placeholder="e.g. #cba6f7 or var(--accent)" style="flex:1">
+      <input type="color" id="pref-sclock-greetcolor-picker" value="#cba6f7" style="width:42px; height:38px; padding:4px">
+     </div>
+    </div>
+    <div class="toggle-row" style="margin-top:14px"><span>Enable Glow</span><label class="switch"><input type="checkbox" id="pref-sclock-enableglow"><span class="slider"></span></label></div>
+    <div id="box-sclock-glow" style="display:none; margin-bottom: 10px;">
+     <div class="range-row"><div class="range-top"><span class="set-sublabel" style="margin:0">Glow Size</span><span class="range-val" id="val-sclock-glow">0px</span></div><input type="range" id="pref-sclock-glow" min="0" max="40" step="1"></div>
+     <div class="flex-row" style="margin-top:8px"><input type="text" id="pref-sclock-glowcolor" placeholder="Glow color (e.g. #cba6f7)" style="flex:1"><input type="color" id="pref-sclock-glowcolor-picker" value="#cba6f7" style="width:42px; height:38px; padding:4px"></div>
+    </div>
+    <div class="toggle-row"><span>Enable Shadow</span><label class="switch"><input type="checkbox" id="pref-sclock-enableshadow"><span class="slider"></span></label></div>
+    <div id="box-sclock-shadow" style="display:none; margin-bottom: 10px;">
+     <div class="range-row"><div class="range-top"><span class="set-sublabel" style="margin:0">Shadow Size</span><span class="range-val" id="val-sclock-shadow">0px</span></div><input type="range" id="pref-sclock-shadow" min="0" max="40" step="1"></div>
+     <div class="flex-row" style="margin-top:8px"><input type="text" id="pref-sclock-shadowcolor" placeholder="Shadow color (e.g. #000000)" style="flex:1"><input type="color" id="pref-sclock-shadowcolor-picker" value="#000000" style="width:42px; height:38px; padding:4px"></div>
+    </div>
+   </div>
+   <div class="set-card">
+    <label class="set-label"><i class="fa-solid fa-font"></i> Fonts</label>
+    <div class="grid-2">
+     <div><span class="set-sublabel">Time Font</span><select id="pref-sclock-font"><option value="system">System</option><option value="syne">Syne</option><option value="space">Space Grotesk</option><option value="mono">JetBrains Mono</option></select></div>
+     <div><span class="set-sublabel">Greeting Font</span><select id="pref-sclock-font-greet" class="font-select"><option value="">Same as time</option><option value="system">System</option><option value="syne">Syne</option><option value="space">Space Grotesk</option><option value="mono">JetBrains Mono</option></select></div>
+    </div>
+    <div class="grid-2" style="margin-top:10px">
+     <div><span class="set-sublabel">Date Font</span><select id="pref-sclock-font-date" class="font-select"><option value="">Same as time</option><option value="system">System</option><option value="syne">Syne</option><option value="space">Space Grotesk</option><option value="mono">JetBrains Mono</option></select></div>
+     <div><span class="set-sublabel">Word Clock Font</span><select id="pref-sclock-font-word" class="font-select"><option value="">Same as time</option><option value="system">System</option><option value="syne">Syne</option><option value="space">Space Grotesk</option><option value="mono">JetBrains Mono</option></select></div>
+    </div>
+    <div style="margin-top:10px">
+     <span class="set-sublabel">Font Weight</span><select id="pref-sclock-weight"><option value="300">Light</option><option value="400">Regular</option><option value="700">Bold</option><option value="800">Extra Bold</option><option value="900">Black</option></select>
+    </div>
+   </div>
+   <div class="set-card">
+    <label class="set-label"><i class="fa-solid fa-upload"></i> Custom Fonts</label>
+    <input type="file" id="pref-sclock-font-file" accept=".ttf,.otf,.woff,.woff2,font/ttf,font/otf,font/woff,font/woff2" style="display:none">
+    <button class="btn btn-primary btn-full" id="btn-sclock-font-upload"><i class="fa-solid fa-upload"></i> Upload Font File</button>
+    <p style="font-size:.72rem;color:var(--hint);margin:8px 0 0;line-height:1.4">Upload TTF, OTF, WOFF, or WOFF2 fonts. They'll appear in the font dropdowns above as ★ entries.</p>
+    <div id="list-custom-fonts" style="margin-top:12px;display:flex;flex-direction:column;gap:8px"></div>
+   </div>
+  </div>
+ </div>
+</div>
+
+<div id="studio-search" class="studio-view">
+ <div class="studio-preview">
+  <div id="studio-search-bg" class="studio-preview-bg"></div>
+  <div id="studio-search-overlay" class="studio-preview-overlay"></div>
+  <div class="studio-topbar">
+   <div class="studio-tabs">
+    <button class="studio-tab" data-studio="studio-clock">Clock</button>
+    <button class="studio-tab" data-studio="studio-search">Search</button>
+    <button class="studio-tab" data-studio="studio-links">Links</button>
+   </div>
+   <div style="display:flex; gap:8px; align-items:center;">
+    <button class="btn btn-studio-preview">Preview Fullscreen</button>
+    <button class="btn btn-studio-preview-live">Preview &amp; Edit</button>
+    <button class="btn" id="studio-search-close">Done</button>
+   </div>
+  </div>
+  <div id="studio-search-mount" style="width:640px; max-width:90vw"></div>
+ </div>
+ <div class="studio-side">
+  <div class="studio-side-header">
+   <div style="font-weight:600; color:var(--text); font-size:1.05rem">Search Settings</div>
+   <div style="display:flex; align-items:center; gap:6px;">
+    <select class="studio-live-switcher" data-current="studio-search">
+     <option value="studio-clock">Clock</option>
+     <option value="studio-search">Search</option>
+     <option value="studio-links">Links</option>
+    </select>
+    <select class="studio-sheet-pos" title="Settings panel position">
+     <option value="bottom">Panel: Bottom</option>
+     <option value="top">Panel: Top</option>
+    </select>
+    <button class="btn studio-save-exit-btn" data-save-exit="studio-search">Save</button>
+    <button class="btn studio-desktop-revert" data-revert-studio="studio-search" title="Revert changes"><i class="fa-solid fa-rotate-left"></i></button>
+    <button class="btn studio-mobile-action studio-mobile-revert" data-revert-studio="studio-search" title="Revert changes"><i class="fa-solid fa-rotate-left"></i></button>
+    <button class="btn btn-primary studio-mobile-action studio-mobile-save" data-save-exit="studio-search" title="Save & Close"><i class="fa-solid fa-check"></i></button>
+    <button class="btn" id="studio-search-close2" style="padding:6px 10px"><i class="fa-solid fa-xmark"></i></button>
+   </div>
+  </div>
+  <div class="studio-side-body">
+   <div class="set-card">
+    <label class="set-label"><i class="fa-solid fa-arrows-up-down-left-right"></i> Size & Shape</label>
+    <div class="range-row"><div class="range-top"><span class="set-sublabel" style="margin:0">Width</span><span class="range-val" id="val-ssearch-w">640px</span></div><input type="range" id="pref-ssearch-w" min="320" max="1000" step="10"></div>
+    <div class="range-row"><div class="range-top"><span class="set-sublabel" style="margin:0">Height</span><span class="range-val" id="val-ssearch-h">56px</span></div><input type="range" id="pref-ssearch-h" min="40" max="100" step="1"></div>
+    <div class="range-row"><div class="range-top"><span class="set-sublabel" style="margin:0">Corner Roundness</span><span class="range-val" id="val-ssearch-radius">14px</span></div><input type="range" id="pref-ssearch-radius" min="0" max="40" step="1"></div>
+    <div class="range-row"><div class="range-top"><span class="set-sublabel" style="margin:0">Font Size</span><span class="range-val" id="val-ssearch-font">19px</span></div><input type="range" id="pref-ssearch-font" min="12" max="28" step="1"></div>
+    <div class="range-row"><div class="range-top"><span class="set-sublabel" style="margin:0">Padding</span><span class="range-val" id="val-ssearch-pad">16px</span></div><input type="range" id="pref-ssearch-pad" min="6" max="32" step="1"></div>
+    <div class="range-row"><div class="range-top"><span class="set-sublabel" style="margin:0">Border Width</span><span class="range-val" id="val-ssearch-bw">1px</span></div><input type="range" id="pref-ssearch-bw" min="0" max="6" step="1"></div>
+    <div class="range-row"><div class="range-top"><span class="set-sublabel" style="margin:0">Blur</span><span class="range-val" id="val-ssearch-blur">0px</span></div><input type="range" id="pref-ssearch-blur" min="0" max="30" step="1"></div>
+
+    <div class="range-row"><div class="range-top"><span class="set-sublabel" style="margin:0">Opacity</span><span class="range-val" id="val-ssearch-op">100%</span></div><input type="range" id="pref-ssearch-op" min="20" max="100" step="1"></div>
+   </div>
+   <div class="set-card">
+    <label class="set-label"><i class="fa-solid fa-palette"></i> Colors & Content</label>
+    <div style="margin-top:10px"><span class="set-sublabel">Text Color</span><div class="flex-row"><input type="text" id="pref-ssearch-textcolor" placeholder="#cdd6f4" style="flex:1; min-width:0"><input type="color" id="pref-ssearch-textcolor-picker" value="#cdd6f4" style="width:42px; height:38px; padding:4px; flex:0 0 42px"></div></div>
+    <div style="margin-top:10px"><span class="set-sublabel">Background</span><div class="flex-row"><input type="text" id="pref-ssearch-bg" placeholder="rgba(...) or #..." style="flex:1; min-width:0"><input type="color" id="pref-ssearch-bg-picker" value="#1e1e2e" style="width:42px; height:38px; padding:4px; flex:0 0 42px"></div></div>
+    <div style="margin-top:10px"><span class="set-sublabel">Outline Color</span><div class="flex-row"><input type="text" id="pref-ssearch-bordercolor" placeholder="#313244 or var(--border)" style="flex:1; min-width:0"><input type="color" id="pref-ssearch-bordercolor-picker" value="#313244" style="width:42px; height:38px; padding:4px; flex:0 0 42px"></div></div>
+    <div class="range-row" style="margin-top:10px"><div class="range-top"><span class="set-sublabel" style="margin:0">Outline Opacity</span><span class="range-val" id="val-ssearch-borderop">100%</span></div><input type="range" id="pref-ssearch-borderop" min="0" max="100" step="1"></div>
+    <div style="margin-top:10px"><span class="set-sublabel">Placeholder</span><div class="flex-row"><input type="text" id="pref-ssearch-placeholder" placeholder="Ask anything..." style="flex:1"><input type="color" id="pref-ssearch-placeholder-color" value="#585b70" style="width:42px; height:38px; padding:4px; flex-shrink:0"></div></div>
+    <div style="margin-top:10px"><span class="set-sublabel">Style Preset</span><select id="pref-ssearch-style"><option value="custom">Custom</option><option value="minimal">Minimal Line</option><option value="pill">Pill</option><option value="soft-square">Soft Square</option><option value="glass">Glass</option><option value="outline">Outline</option></select></div>
+   </div>
+   <div class="set-card">
+    <label class="set-label"><i class="fa-solid fa-sliders"></i> Functionality</label>
+    <div class="check-row"><input type="checkbox" id="studio-chk-search-hint"><label for="studio-chk-search-hint">Show autocomplete hint</label></div>
+    <div class="check-row"><input type="checkbox" id="studio-chk-search-nav"><label for="studio-chk-search-nav">Show AUTO toggle</label></div>
+    <div class="check-row"><input type="checkbox" id="studio-chk-search-arrow"><label for="studio-chk-search-arrow">Show submit arrow</label></div>
+    <div class="check-row"><input type="checkbox" id="studio-chk-search-newtab"><label for="studio-chk-search-newtab">Open in new tab</label></div>
+   </div>
+   <div class="set-card">
+    <label class="set-label"><i class="fa-solid fa-gem"></i> Visual Effects</label>
+    <div class="toggle-row" style="margin-top:16px;"><span>Enable Glow</span><label class="switch"><input type="checkbox" id="pref-useglow"><span class="slider"></span></label></div>
+    <div id="box-sglow" style="display:none; margin-bottom:10px;">
+     <div class="range-row"><div class="range-top"><span class="set-sublabel" style="margin:0">Glow Size</span><span class="range-val" id="val-sglow">20px</span></div><input type="range" id="pref-sglow" min="0" max="50" step="1"></div>
+     <div class="range-row"><div class="range-top"><span class="set-sublabel" style="margin:0">Glow Opacity</span><span class="range-val" id="val-sglowop">100%</span></div><input type="range" id="pref-sglowop" min="0" max="100" step="1"></div>
+     <div class="flex-row"><input type="text" id="pref-sglowcol" placeholder="Glow color (e.g. #cba6f7)" style="flex:1"><input type="color" id="pref-sglowcol-picker" value="#cba6f7" style="width:42px; height:38px; padding:4px"></div>
+    </div>
+    <div class="toggle-row"><span>Enable Focus Glow</span><label class="switch"><input type="checkbox" id="pref-usehoverglow"><span class="slider"></span></label></div>
+    <div id="box-shoverglow" style="display:none; margin-bottom:10px;">
+     <div class="range-row"><div class="range-top"><span class="set-sublabel" style="margin:0">Focus Glow Size</span><span class="range-val" id="val-shoverglow">20px</span></div><input type="range" id="pref-shoverglow" min="0" max="50" step="1"></div>
+     <div class="range-row"><div class="range-top"><span class="set-sublabel" style="margin:0">Focus Glow Opacity</span><span class="range-val" id="val-shoverglowop">100%</span></div><input type="range" id="pref-shoverglowop" min="0" max="100" step="1"></div>
+     <div class="flex-row"><input type="text" id="pref-shoverglowcol" placeholder="Glow color (e.g. #cba6f7)" style="flex:1"><input type="color" id="pref-shoverglowcol-picker" value="#cba6f7" style="width:42px; height:38px; padding:4px"></div>
+    </div>
+    <div class="toggle-row"><span>Enable Shadow</span><label class="switch"><input type="checkbox" id="pref-useshadow"><span class="slider"></span></label></div>
+    <div id="box-sshadow" style="display:none; margin-bottom:10px;">
+     <div class="range-row"><div class="range-top"><span class="set-sublabel" style="margin:0">Shadow Size</span><span class="range-val" id="val-sshadow">10px</span></div><input type="range" id="pref-sshadow" min="0" max="50" step="1"></div>
+     <div class="range-row"><div class="range-top"><span class="set-sublabel" style="margin:0">Shadow Opacity</span><span class="range-val" id="val-sshadowop">100%</span></div><input type="range" id="pref-sshadowop" min="0" max="100" step="1"></div>
+     <div class="flex-row"><input type="text" id="pref-sshadowcol" placeholder="Shadow color (e.g. #000000)" style="flex:1"><input type="color" id="pref-sshadowcol-picker" value="#000000" style="width:42px; height:38px; padding:4px"></div>
+    </div>
+    <div class="toggle-row"><span>Enable Focus Shadow</span><label class="switch"><input type="checkbox" id="pref-usehovershadow"><span class="slider"></span></label></div>
+    <div id="box-shovershadow" style="display:none; margin-bottom:10px;">
+     <div class="range-row"><div class="range-top"><span class="set-sublabel" style="margin:0">Focus Shadow Size</span><span class="range-val" id="val-shovershadow">10px</span></div><input type="range" id="pref-shovershadow" min="0" max="50" step="1"></div>
+     <div class="range-row"><div class="range-top"><span class="set-sublabel" style="margin:0">Focus Shadow Opacity</span><span class="range-val" id="val-shovershadowop">100%</span></div><input type="range" id="pref-shovershadowop" min="0" max="100" step="1"></div>
+     <div class="flex-row"><input type="text" id="pref-shovershadowcol" placeholder="Shadow color (e.g. #000000)" style="flex:1"><input type="color" id="pref-shovershadowcol-picker" value="#000000" style="width:42px; height:38px; padding:4px"></div>
+    </div>
+   </div>
+   <div class="set-card">
+    <label class="set-label"><i class="fa-solid fa-arrow-right"></i> Button Styling</label>
+    <div class="range-row"><div class="range-top"><span class="set-sublabel" style="margin:0">Width</span><span class="range-val" id="val-sbtn-w">52px</span></div><input type="range" id="pref-sbtn-w" min="24" max="140" step="1"></div>
+    <div class="range-row"><div class="range-top"><span class="set-sublabel" style="margin:0">Height</span><span class="range-val" id="val-sbtn-h">100%</span></div><input type="range" id="pref-sbtn-h" min="20" max="100" step="1"></div>
+    <div class="range-row"><div class="range-top"><span class="set-sublabel" style="margin:0">Roundness</span><span class="range-val" id="val-sbtn-radius">14px</span></div><input type="range" id="pref-sbtn-radius" min="0" max="40" step="1"></div>
+    <div class="range-row"><div class="range-top"><span class="set-sublabel" style="margin:0">Opacity</span><span class="range-val" id="val-sbtn-op">100%</span></div><input type="range" id="pref-sbtn-op" min="0" max="100" step="1"></div>
+    <div style="margin-top:8px">
+     <span class="set-sublabel">Color</span>
+     <div class="flex-row"><input type="text" id="pref-sbtn-color" placeholder="e.g. var(--subtext) or #a6adc8" style="flex:1"><input type="color" id="pref-sbtn-color-picker" value="#a6adc8" style="width:42px; height:38px; padding:4px"></div>
+    </div>
+    <div class="toggle-row" style="margin-top:12px"><span>Override Hover Highlight</span><label class="switch"><input type="checkbox" id="pref-sbtn-hover-override"><span class="slider"></span></label></div>
+    <div id="box-sbtn-hover" style="display:none; margin-bottom:10px;">
+     <div class="flex-row"><input type="text" id="pref-sbtn-hover-color" placeholder="Hover color (e.g. #cba6f7)" style="flex:1"><input type="color" id="pref-sbtn-hover-color-picker" value="#cba6f7" style="width:42px; height:38px; padding:4px"></div>
+    </div>
+    <div style="margin-top:8px">
+     <span class="set-sublabel">Arrow Icon</span>
+     <select id="pref-sbtn-icon">
+      <option value="arrow">Arrow</option>
+      <option value="chevron">Chevron</option>
+      <option value="angle">Angle</option>
+      <option value="long-arrow">Long Arrow</option>
+      <option value="caret">Caret</option>
+      <option value="external">External Arrow</option>
+      <option value="search">Search</option>
+     </select>
+    </div>
+   </div>
+  </div>
+ </div>
+</div>
+
+<div id="studio-links" class="studio-view">
+ <div class="studio-preview">
+  <div id="studio-links-bg" class="studio-preview-bg"></div>
+  <div id="studio-links-overlay" class="studio-preview-overlay"></div>
+  <div class="studio-topbar">
+   <div class="studio-tabs">
+    <button class="studio-tab" data-studio="studio-clock">Clock</button>
+    <button class="studio-tab" data-studio="studio-search">Search</button>
+    <button class="studio-tab" data-studio="studio-links">Links</button>
+   </div>
+   <div style="display:flex; gap:8px; align-items:center;">
+    <button class="btn btn-studio-preview">Preview Fullscreen</button>
+    <button class="btn btn-studio-preview-live">Preview &amp; Edit</button>
+    <button class="btn" id="studio-links-close">Done</button>
+   </div>
+  </div>
+  <div id="studio-links-mount" style="width:720px; max-width:92vw"></div>
+ </div>
+ <div class="studio-side">
+  <div class="studio-side-header">
+   <div style="font-weight:600; color:var(--text); font-size:1.05rem">Links Settings</div>
+   <div style="display:flex; align-items:center; gap:6px;">
+    <select class="studio-live-switcher" data-current="studio-links">
+     <option value="studio-clock">Clock</option>
+     <option value="studio-search">Search</option>
+     <option value="studio-links">Links</option>
+    </select>
+    <select class="studio-sheet-pos" title="Settings panel position">
+     <option value="bottom">Panel: Bottom</option>
+     <option value="top">Panel: Top</option>
+    </select>
+    <button class="btn studio-save-exit-btn" data-save-exit="studio-links">Save</button>
+    <button class="btn studio-desktop-revert" data-revert-studio="studio-links" title="Revert changes"><i class="fa-solid fa-rotate-left"></i></button>
+    <button class="btn studio-mobile-action studio-mobile-revert" data-revert-studio="studio-links" title="Revert changes"><i class="fa-solid fa-rotate-left"></i></button>
+    <button class="btn btn-primary studio-mobile-action studio-mobile-save" data-save-exit="studio-links" title="Save & Close"><i class="fa-solid fa-check"></i></button>
+    <button class="btn" id="studio-links-close2" style="padding:6px 10px"><i class="fa-solid fa-xmark"></i></button>
+   </div>
+  </div>
+  <div class="studio-side-body">
+   <div class="set-card">
+    <label class="set-label"><i class="fa-solid fa-layer-group"></i> Style Presets</label>
+    <div class="preset-cards" id="studio-ql-preset-cards"></div>
+   </div>
+   <div class="set-card" id="box-ql-dock" style="display:none;">
+    <label class="set-label"><i class="fa-solid fa-grip"></i> Dock Styling</label>
+    <div class="range-row"><div class="range-top"><span class="set-sublabel" style="margin:0">Width</span><span class="range-val" id="val-sql-dockw">0px</span></div><input type="range" id="pref-sql-dockw" min="0" max="1200" step="10"></div>
+    <div class="range-row"><div class="range-top"><span class="set-sublabel" style="margin:0">Height</span><span class="range-val" id="val-sql-dockh">0px</span></div><input type="range" id="pref-sql-dockh" min="0" max="400" step="2"></div>
+    <div class="range-row"><div class="range-top"><span class="set-sublabel" style="margin:0">Padding Y</span><span class="range-val" id="val-sql-dockpy">10px</span></div><input type="range" id="pref-sql-dockpy" min="0" max="60" step="1"></div>
+    <div class="range-row"><div class="range-top"><span class="set-sublabel" style="margin:0">Padding X</span><span class="range-val" id="val-sql-dockpx">14px</span></div><input type="range" id="pref-sql-dockpx" min="0" max="80" step="1"></div>
+    <div class="range-row"><div class="range-top"><span class="set-sublabel" style="margin:0">Corner Radius</span><span class="range-val" id="val-sql-dockradius">18px</span></div><input type="range" id="pref-sql-dockradius" min="0" max="60" step="1"></div>
+    <div class="range-row"><div class="range-top"><span class="set-sublabel" style="margin:0">Border Width</span><span class="range-val" id="val-sql-dockbw">1px</span></div><input type="range" id="pref-sql-dockbw" min="0" max="6" step="1"></div>
+    <div class="range-row"><div class="range-top"><span class="set-sublabel" style="margin:0">Shadow Size</span><span class="range-val" id="val-sql-dockshadow">20px</span></div><input type="range" id="pref-sql-dockshadow" min="0" max="80" step="1"></div>
+    <div class="range-row"><div class="range-top"><span class="set-sublabel" style="margin:0">Blur</span><span class="range-val" id="val-sql-dockblur">0px</span></div><input type="range" id="pref-sql-dockblur" min="0" max="30" step="1"></div>
+    <div class="range-row"><div class="range-top"><span class="set-sublabel" style="margin:0">Opacity</span><span class="range-val" id="val-sql-dockopacity">100%</span></div><input type="range" id="pref-sql-dockopacity" min="10" max="100" step="1"></div>
+    <div style="margin-top:8px">
+     <span class="set-sublabel">Background Color</span>
+     <div class="flex-row"><input type="text" id="pref-sql-dockbg" placeholder="e.g. rgba(0,0,0,.5)" style="flex:1"><input type="color" id="pref-sql-dockbg-picker" value="#1e1e2e" style="width:42px; height:38px; padding:4px"></div>
+    </div>
+    <div style="margin-top:8px">
+     <span class="set-sublabel">Border Color</span>
+     <div class="flex-row"><input type="text" id="pref-sql-dockbordercolor" placeholder="e.g. #313244" style="flex:1"><input type="color" id="pref-sql-dockbordercolor-picker" value="#313244" style="width:42px; height:38px; padding:4px"></div>
+    </div>
+   </div>
+   <div class="set-card">
+    <label class="set-label"><i class="fa-solid fa-arrows-up-down-left-right"></i> Size & Layout</label>
+    <div class="range-row"><div class="range-top"><span class="set-sublabel" style="margin:0">Links Per Row</span><span class="range-val" id="val-sql-perrow">5</span></div><input type="range" id="pref-sql-perrow" min="1" max="12" step="1"></div>
+    <div class="range-row"><div class="range-top"><span class="set-sublabel" style="margin:0">Scale</span><span class="range-val" id="val-sql-scale">100%</span></div><input type="range" id="pref-sql-scale" min="70" max="150" step="5"></div>
+    <div class="range-row"><div class="range-top"><span class="set-sublabel" style="margin:0">Gap</span><span class="range-val" id="val-sql-gap">12px</span></div><input type="range" id="pref-sql-gap" min="4" max="32" step="1"></div>
+    <div class="range-row"><div class="range-top"><span class="set-sublabel" style="margin:0">Icon Size</span><span class="range-val" id="val-sql-icon">18px</span></div><input type="range" id="pref-sql-icon" min="12" max="36" step="1"></div>
+    <div class="range-row"><div class="range-top"><span class="set-sublabel" style="margin:0">Corner Roundness</span><span class="range-val" id="val-sql-radius">12px</span></div><input type="range" id="pref-sql-radius" min="0" max="30" step="1"></div>
+    <div class="range-row"><div class="range-top"><span class="set-sublabel" style="margin:0">Padding</span><span class="range-val" id="val-sql-pad">10px</span></div><input type="range" id="pref-sql-pad" min="4" max="24" step="1"></div>
+    <div style="margin-top:8px">
+     <span class="set-sublabel">Layout</span><select id="pref-sql-layout"><option value="flex">Flex Wrap</option><option value="grid">Grid</option></select>
+    </div>
+   </div>
+   <div class="set-card">
+    <label class="set-label"><i class="fa-solid fa-palette"></i> Colors &amp; Looks</label>
+    <span class="set-sublabel" style="margin-top:-4px; margin-bottom:12px;">Leave empty to use the theme default.</span>
+    <div style="margin-top:4px">
+     <span class="set-sublabel">Background</span>
+     <div class="flex-row"><input type="text" id="pref-sql-bgcolor" placeholder="e.g. var(--overlay) or #1e1e2e" style="flex:1"><input type="color" id="pref-sql-bgcolor-picker" value="#1e1e2e" style="width:42px; height:38px; padding:4px"></div>
+    </div>
+    <div class="range-row" style="margin-top:10px"><div class="range-top"><span class="set-sublabel" style="margin:0">Background Opacity</span><span class="range-val" id="val-sql-op">100%</span></div><input type="range" id="pref-sql-op" min="20" max="100" step="1"></div>
+    <div class="range-row"><div class="range-top"><span class="set-sublabel" style="margin:0">Blur</span><span class="range-val" id="val-sql-blur">10px</span></div><input type="range" id="pref-sql-blur" min="0" max="40" step="1"></div>
+    <div style="margin-top:10px">
+     <span class="set-sublabel">Text</span>
+     <div class="flex-row"><input type="text" id="pref-sql-textcolor" placeholder="e.g. var(--text) or #cdd6f4" style="flex:1"><input type="color" id="pref-sql-textcolor-picker" value="#cdd6f4" style="width:42px; height:38px; padding:4px"></div>
+    </div>
+    <div class="range-row" style="margin-top:10px"><div class="range-top"><span class="set-sublabel" style="margin:0">Text Opacity</span><span class="range-val" id="val-sql-textop">100%</span></div><input type="range" id="pref-sql-textop" min="0" max="100" step="1"></div>
+    <div style="margin-top:10px">
+     <span class="set-sublabel">Border</span>
+     <div class="flex-row"><input type="text" id="pref-sql-bordercolor" placeholder="e.g. var(--border) or #313244" style="flex:1"><input type="color" id="pref-sql-bordercolor-picker" value="#313244" style="width:42px; height:38px; padding:4px"></div>
+    </div>
+    <div class="range-row" style="margin-top:10px"><div class="range-top"><span class="set-sublabel" style="margin:0">Border Opacity</span><span class="range-val" id="val-sql-borderop">100%</span></div><input type="range" id="pref-sql-borderop" min="0" max="100" step="1"></div>
+    <div style="margin-top:10px">
+     <span class="set-sublabel">Icon Background</span>
+     <div class="flex-row"><input type="text" id="pref-sql-iconbg" placeholder="e.g. #ffffff" style="flex:1"><input type="color" id="pref-sql-iconbg-picker" value="#ffffff" style="width:42px; height:38px; padding:4px"></div>
+    </div>
+    <div class="range-row" style="margin-top:10px"><div class="range-top"><span class="set-sublabel" style="margin:0">Icon Background Opacity</span><span class="range-val" id="val-sql-iconbgop">100%</span></div><input type="range" id="pref-sql-iconbgop" min="0" max="100" step="1"></div>
+   </div>
+   <div class="set-card">
+    <label class="set-label"><i class="fa-solid fa-gem"></i> Visual Effects</label>
+    <div class="toggle-row"><span>Enable Hover Outline</span><label class="switch"><input type="checkbox" id="pref-sql-hover-outline"><span class="slider"></span></label></div>
+    <div id="box-ql-outline" style="display:none; margin:8px 0 10px; padding-left:6px;">
+     <div class="range-row"><div class="range-top"><span class="set-sublabel" style="margin:0">Outline Size</span><span class="range-val" id="val-sql-olsize">1px</span></div><input type="range" id="pref-sql-olsize" min="0" max="6" step="1"></div>
+     <div class="range-row"><div class="range-top"><span class="set-sublabel" style="margin:0">Outline Opacity</span><span class="range-val" id="val-sql-olop">100%</span></div><input type="range" id="pref-sql-olop" min="0" max="100" step="1"></div>
+     <div class="range-row"><div class="range-top"><span class="set-sublabel" style="margin:0">Outline Glow</span><span class="range-val" id="val-sql-olglow">0px</span></div><input type="range" id="pref-sql-olglow" min="0" max="10" step="1"></div>
+     <div class="flex-row"><input type="text" id="pref-sql-olcolor" placeholder="Outline color (e.g. #cba6f7)" style="flex:1"><input type="color" id="pref-sql-olcolor-picker" value="#cba6f7" style="width:42px; height:38px; padding:4px"></div>
+    </div>
+    <div class="toggle-row"><span>Enable Hover Lift</span><label class="switch"><input type="checkbox" id="pref-sql-hover-lift"><span class="slider"></span></label></div>
+    <div class="toggle-row"><span>Enable Hover Glow</span><label class="switch"><input type="checkbox" id="pref-sql-hover-glow"><span class="slider"></span></label></div>
+    <div id="box-ql-glow" style="display:none; margin:8px 0 10px; padding-left:6px;">
+     <div class="range-row"><div class="range-top"><span class="set-sublabel" style="margin:0">Glow Size</span><span class="range-val" id="val-sql-glowsize">20px</span></div><input type="range" id="pref-sql-glowsize" min="0" max="50" step="1"></div>
+     <div class="range-row"><div class="range-top"><span class="set-sublabel" style="margin:0">Glow Opacity</span><span class="range-val" id="val-sql-glowop">100%</span></div><input type="range" id="pref-sql-glowop" min="0" max="100" step="1"></div>
+     <div class="flex-row"><input type="text" id="pref-sql-glowcolor" placeholder="Glow color (e.g. #cba6f7)" style="flex:1"><input type="color" id="pref-sql-glowcolor-picker" value="#cba6f7" style="width:42px; height:38px; padding:4px"></div>
+    </div>
+    <div class="toggle-row"><span>Enable Hover Scale</span><label class="switch"><input type="checkbox" id="pref-sql-hover-scale"><span class="slider"></span></label></div>
+    <div id="box-ql-scale" style="display:none; margin:8px 0 10px; padding-left:6px;">
+     <div class="range-row"><div class="range-top"><span class="set-sublabel" style="margin:0">Scale Amount</span><span class="range-val" id="val-sql-scaleamt">6%</span></div><input type="range" id="pref-sql-scaleamt" min="0" max="20" step="1"></div>
+    </div>
+    <p id="ql-scale-hint" style="font-size:.72rem; color:var(--hint); margin:6px 0 0; line-height:1.4; display:none;">Hover Scale requires Hover Lift to be disabled.</p>
+   </div>
+   <div class="set-card">
+    <label class="set-label"><i class="fa-solid fa-sliders"></i> Functionality</label>
+    <div class="check-row"><input type="checkbox" id="studio-chk-ql-show"><label for="studio-chk-ql-show">Show quick links</label></div>
+    <div class="check-row"><input type="checkbox" id="studio-chk-ql-text"><label for="studio-chk-ql-text">Show text</label></div>
+    <div class="check-row"><input type="checkbox" id="studio-chk-ql-icons"><label for="studio-chk-ql-icons">Show icons</label></div>
+    <div class="check-row" id="row-ql-shortcut" style="display:none;"><input type="checkbox" id="studio-chk-ql-shortcut"><label for="studio-chk-ql-shortcut">Show assigned shortcut</label></div>
+    <div class="check-row"><input type="checkbox" id="studio-chk-ql-newtab"><label for="studio-chk-ql-newtab">Open in new tab</label></div>
+   </div>
+   <div class="set-card">
+    <label class="set-label"><i class="fa-solid fa-up-right-from-square"></i> Manage Links</label>
+    <div id="studio-ql-list" style="display:flex; flex-direction:column; gap:8px; max-height:280px; overflow-y:auto"></div>
+    <div class="flex-row" style="margin-top:10px"><input type="text" id="studio-ql-name" placeholder="Name"><input type="text" id="studio-ql-url" placeholder="https://"><button class="text-add-btn" id="studio-ql-add">+ Add</button></div>
+   </div>
+  </div>
+ </div>
+</div>
+
+<script>
+(function(){
+  var banner = document.getElementById('update-banner');
+  var bannerText = document.getElementById('update-banner-text');
+  var dismissBtn = document.getElementById('update-dismiss');
+  var checkInProgress = false;
+  var latestVersion = null;
+  var hideTimer = null;
+  var reloading = false;
+  var swReg = null;
+
+  function getKnownVersion() {
+    try { return (typeof userPrefs !== 'undefined' && userPrefs && userPrefs.knownVersion) || null; }
+    catch(e) { return null; }
+  }
+  function setKnownVersion(v) {
+    try {
+      if (typeof userPrefs === 'undefined' || !userPrefs || typeof save !== 'function') return;
+      userPrefs.knownVersion = v;
+      var hasPrefs = false;
+      try {
+        hasPrefs = !!(localStorage.getItem('anoxle_prefs') ||
+                      localStorage.getItem('user_prefs_v14') ||
+                      localStorage.getItem('user_prefs_v13') ||
+                      localStorage.getItem('user_prefs_v12') ||
+                      localStorage.getItem('onboarding_shown'));
+      } catch(e) { hasPrefs = true; }
+      if (hasPrefs) save();
+    } catch(e) {}
+  }
+  function hideBanner() { if (banner) banner.classList.remove('show'); }
+  function setBanner(text, opts) {
+    opts = opts || {};
+    if (!banner || !bannerText) return;
+    clearTimeout(hideTimer);
+    bannerText.textContent = text;
+    banner.classList.add('show');
+    if (opts.autoHideMs) hideTimer = setTimeout(hideBanner, opts.autoHideMs);
+  }
+  function setVmStatus(text, isError) {
+    var el = document.getElementById('vm-status');
+    if (el) {
+      el.textContent = text;
+      el.style.color = isError ? '#ef4444' : 'var(--subtext)';
+    }
+  }
+  function updateVmUI() {
+    var cur = document.getElementById('vm-current');
+    var lat = document.getElementById('vm-latest');
+    if (cur) cur.textContent = getKnownVersion() || '—';
+    if (lat) lat.textContent = latestVersion || '—';
+  }
+  function armOnlineRetry() {
+    window.addEventListener('online', function handler() {
+      window.removeEventListener('online', handler);
+      checkForUpdates();
+    });
+  }
+
+  function log(msg, isError) {
+    var fn = isError ? console.warn : console.log;
+    fn.call(console, '[update] ' + msg);
+  }
+
+  async function checkForUpdates(manual) {
+    if (checkInProgress) return;
+    checkInProgress = true;
+    setVmStatus('Checking…', false);
+    log('checking for updates…');
+
+    if (!navigator.onLine) {
+      var offlineMsg = 'Checking for updates failed due to network issues.';
+      if (manual) setBanner(offlineMsg, { autoHideMs: 4000 });
+      setVmStatus(offlineMsg, true);
+      log(offlineMsg, true);
+      checkInProgress = false;
+      armOnlineRetry();
+      return;
+    }
+
+    try {
+      var res = await fetch('./version.txt?t=' + Date.now(), { cache: 'no-store' });
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      var text = (await res.text()).trim();
+      if (!text) throw new Error('Empty version file');
+      latestVersion = text;
+      updateVmUI();
+
+      var known = getKnownVersion();
+      if (!known) {
+        setKnownVersion(text);
+        setVmStatus('Up to date', false);
+        log('first run — recorded version ' + text);
+        checkInProgress = false;
+        return;
+      }
+      if (known === text) {
+        setVmStatus('Up to date', false);
+        log('up to date (' + text + ')');
+        checkInProgress = false;
+        return;
+      }
+
+      setKnownVersion(text);
+      setVmStatus('Updating to ' + text + '…', false);
+      log('update available — ' + known + ' → ' + text);
+      await triggerSwUpdate();
+    } catch (err) {
+      var msg = navigator.onLine
+        ? 'Checking for updates failed: ' + (err.message || 'unknown error')
+        : 'Checking for updates failed due to network issues.';
+      if (manual) setBanner(msg, { autoHideMs: 5000 });
+      setVmStatus(msg, true);
+      log(msg, true);
+      armOnlineRetry();
+      checkInProgress = false;
+    }
+  }
+
+  async function triggerSwUpdate() {
+    if (!('serviceWorker' in navigator)) { performForceReinstall(); return; }
+    var reg = swReg || await navigator.serviceWorker.getRegistration();
+    if (!reg) { performForceReinstall(); return; }
+
+    if (reg.waiting) {
+      reg.waiting.postMessage({ type: 'SKIP_WAITING' });
+      return;
+    }
+
+    try { await reg.update(); } catch(e) {}
+    await new Promise(function(r){ setTimeout(r, 100); });
+
+    if (reg.waiting) {
+      reg.waiting.postMessage({ type: 'SKIP_WAITING' });
+      return;
+    }
+
+    if (reg.installing) {
+      var nw = reg.installing;
+      var outcome = await new Promise(function(resolve){
+        var t = setTimeout(function(){ resolve('timeout'); }, 5000);
+        nw.addEventListener('statechange', function(){
+          if (nw.state === 'installed') { clearTimeout(t); resolve('installed'); }
+          else if (nw.state === 'redundant') { clearTimeout(t); resolve('failed'); }
+        });
+      });
+      if (outcome === 'installed' && reg.waiting) {
+        reg.waiting.postMessage({ type: 'SKIP_WAITING' });
+        return;
+      }
+    }
+
+    performForceReinstall();
+  }
+
+  async function performForceReinstall() {
+    setBanner('Reinstalling…', {});
+    setVmStatus('Reinstalling…', false);
+    try {
+      if ('serviceWorker' in navigator) {
+        var regs = await navigator.serviceWorker.getRegistrations();
+        await Promise.all(regs.map(function(r){ return r.unregister(); }));
+      }
+      var keys = await caches.keys();
+      await Promise.all(keys.map(function(k){ return caches.delete(k); }));
+    } catch(e) {}
+    location.reload();
+  }
+
+  if (dismissBtn) dismissBtn.onclick = hideBanner;
+
+  if ('serviceWorker' in navigator) {
+    var hadControllerAtLoad = !!navigator.serviceWorker.controller;
+    navigator.serviceWorker.addEventListener('controllerchange', function(){
+      if (!hadControllerAtLoad) return;
+      if (reloading) return;
+      reloading = true;
+      location.reload();
+    });
+    window.addEventListener('load', function(){
+      navigator.serviceWorker.register('./sw.js', { updateViaCache: 'none' })
+        .then(function(reg){ swReg = reg; })
+        .catch(function(err){ console.warn('[SW] registration failed:', err); });
+    });
+  }
+
+  function wireSettingsButtons() {
+    var checkBtn = document.getElementById('vm-check');
+    var forceBtn = document.getElementById('vm-force');
+    if (checkBtn) checkBtn.onclick = function(){ checkForUpdates(true); };
+    if (forceBtn) forceBtn.onclick = function(){
+      var msg = 'This will reset everything to defaults: your settings, uploaded backgrounds and videos, custom fonts, and the offline cache. The page will reload with a clean state afterward.';
+      if (typeof showConfirm === 'function') {
+        showConfirm('Force reinstall?', msg, performForceReinstall);
+      } else if (confirm(msg)) {
+        performForceReinstall();
+      }
+    };
+    updateVmUI();
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', wireSettingsButtons);
+  else wireSettingsButtons();
+
+  window.checkForUpdates = checkForUpdates;
+  window.addEventListener('load', function(){ setTimeout(checkForUpdates, 200); });
+})();
+</script>
+</body>
+</html
