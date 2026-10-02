@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <!-- SUTURE: DO NOT DELETE SPLITTER MARKERS NO MATTER WHAT -->
 <html lang="en">
@@ -12,6 +13,27 @@
     <meta property="og:image" content="./assets/icon.png">
     <meta name="theme-color" content="#9A62DA">
     <meta name="color-scheme" content="dark">
+
+<script>
+(async () => {
+  if (!/[?&]reset=1/.test(location.search)) return;
+  try {
+    if ('serviceWorker' in navigator) {
+      const regs = await navigator.serviceWorker.getRegistrations();
+      await Promise.all(regs.map(r => r.unregister()));
+    }
+    const keys = await caches.keys();
+    await Promise.all(keys.map(k => caches.delete(k)));
+    localStorage.clear();
+    await new Promise(resolve => {
+      const req = indexedDB.deleteDatabase('AnoxleDB');
+      req.onsuccess = req.onerror = req.onblocked = resolve;
+      setTimeout(resolve, 800);
+    });
+  } catch {}
+  location.replace(location.pathname);
+})();
+</script>
 
     <link rel="manifest" href="./assets/manifest.json">
     <meta name="mobile-web-app-capable" content="yes">
@@ -1022,7 +1044,7 @@
 
   if (dismissbtn) dismissbtn.onclick = hidebanner;
 
-  if ('serviceWorker' in navigator) {
+  if ('serviceWorker' in navigator && !/[?&]reset=1/.test(location.search)) {
     const hadcontrolleratload = !!navigator.serviceWorker.controller;
     navigator.serviceWorker.addEventListener('controllerchange', () => {
       if (!hadcontrolleratload) return;

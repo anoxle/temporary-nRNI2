@@ -1,37 +1,67 @@
-const CACHE_NAME = 'anoxle-startpage-v2026.10.02.0754';
-const SHELL_ASSETS = ["./","./index.html","./assets/app.js","./assets/app.css","./assets/icon.png","./assets/manifest.json"];
+const CACHE_NAME = 'anoxle-startpage-v2026.10.02.090958';
+const FONT_CACHE = 'anoxle-fonts-v1';
+const SHELL_ASSETS = ["./","./index.html","./assets/app.js","./assets/app.css","./icon.png","./assets/icon.png","./manifest.json","./assets/manifest.json"];
+const REQUIRED = ['./index.html', './assets/app.js'];
+const BYPASS = ['version.txt', 'default.json', 'default-mobile.json', 'sw.js'];
 
 self.addEventListener('install', e => {
-  e.waitUntil(caches.open(CACHE_NAME).then(c => c.addAll(SHELL_ASSETS)));
+  e.waitUntil(caches.open(CACHE_NAME).then(cache => Promise.all(SHELL_ASSETS.map(path =>
+    fetch(new Request(path, { cache: 'reload' })).then(res => {
+      if (!res.ok) throw new Error(path + ' ' + res.status);
+      return cache.put(path, res);
+    }).catch(err => {
+      if (REQUIRED.includes(path)) throw err;
+    })
+  ))));
 });
+
 self.addEventListener('message', e => {
   if (e.data && e.data.type === 'SKIP_WAITING') self.skipWaiting();
 });
+
 self.addEventListener('activate', e => {
-  e.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(k => k!== CACHE_NAME).map(k => caches.delete(k)))).then(() => self.clients.claim()));
+  e.waitUntil(
+    caches.keys()
+      .then(keys => Promise.all(keys.filter(k => k !== CACHE_NAME && k !== FONT_CACHE).map(k => caches.delete(k))))
+      .then(() => self.clients.claim())
+  );
 });
+
+function store(e, cacheName, req, res) {
+  if (res.ok) {
+    const clone = res.clone();
+    e.waitUntil(caches.open(cacheName).then(c => c.put(req, clone)));
+  }
+}
+
 self.addEventListener('fetch', e => {
   const req = e.request;
   const url = new URL(req.url);
-  if (req.method!== 'GET' || url.pathname.includes('sw.js')) return;
+  if (req.method !== 'GET') return;
+  if (url.origin === self.location.origin && BYPASS.some(n => url.pathname.endsWith('/' + n))) return;
+  if (url.searchParams.has('reset')) return;
 
-  if (url.pathname.includes('/assets/fonts/') || req.destination === 'font') {
+  const isFontFile = url.pathname.includes('/assets/fonts/') && !url.pathname.endsWith('.css');
+  if (isFontFile || req.destination === 'font') {
     e.respondWith(caches.match(req).then(cached => cached || fetch(req).then(res => {
-      if (res.ok) { const clone = res.clone(); caches.open(CACHE_NAME).then(c => c.put(req, clone)); }
+      store(e, FONT_CACHE, req, res);
       return res;
     })));
     return;
   }
+
   if (req.mode === 'navigate') {
-    e.respondWith(fetch(req).then(res => {
-      const clone = res.clone(); caches.open(CACHE_NAME).then(c => c.put(req, clone)); return res;
-    }).catch(() => caches.match(req).then(r => r || caches.match('./index.html'))));
+    e.respondWith(fetch(req, { cache: 'no-cache' }).then(res => {
+      store(e, CACHE_NAME, req, res);
+      return res;
+    }).catch(() => caches.match(req, { ignoreSearch: true }).then(r => r || caches.match('./index.html'))));
     return;
   }
+
   if (url.origin === self.location.origin) {
-    e.respondWith(caches.match(req).then(cached => cached || fetch(req).then(res => {
-      if (res.ok) { const clone = res.clone(); caches.open(CACHE_NAME).then(c => c.put(req, clone)); }
+    e.respondWith(fetch(req, { cache: 'no-cache' }).then(res => {
+      store(e, CACHE_NAME, req, res);
       return res;
-    })));
+    }).catch(() => caches.match(req)));
   }
 });
