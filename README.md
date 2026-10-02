@@ -46,9 +46,10 @@ To use this as your new tab page, install one of the extensions below and point 
 Fully customizable to make it *yours*.
 
 <div>
-  <img src="http://anoxle.github.io/resources/startpage/screenshots/1920x1080_desktop_beneath_the_golden_sky.webp" alt="Desktop preview 1" width="800" />
+  <img src="https://raw.githubusercontent.com/etanny/startpage-presets/refs/heads/main/catppuccin-mocha.png" alt="Catppuccin Mocha Black Hole Preset" width="800" />
   <br>
-  <img src="http://anoxle.github.io/resources/startpage/screenshots/1920x1080_desktop_furina_under_dark_skies.webp" alt="Desktop preview 2" width="800" />
+  <img src="https://raw.githubusercontent.com/etanny/startpage-presets/refs/heads/main/misty-forest-default.png" alt="Misty Forest Default Preset" width="800" />
+  <img src="https://raw.githubusercontent.com/etanny/startpage-presets/refs/heads/main/night-drive.png" alt="Night Drive Preset" width="800" />
 </div>
 
-[1. Beneath the Golden Sky Live Wallpaper](https://motionbgs.com/beneath-the-golden-sky) / [2. Furina Under Dark Skies Live Wallpaper](https://motionbgs.com/furina-under-dark-skies)
+Download configuration files for these here:

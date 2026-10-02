@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!-- SUTURE: DO NOT DELETE SPLITTER MARKERS NO MATTER WHAT -->
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -58,13 +59,13 @@
 <div id="mode-switch" class="mode-switch">
     <div class="mmb-track">
         <div class="mmb-slider-bg" id="mmb-slider"></div>
-        <button class="mmb-btn active" id="mmb-search">Search</button>
+        <button id="mmb-search" class="mmb-btn active">Search</button>
         <button class="mmb-btn" id="mmb-ask">Ask</button>
     </div>
 </div>
 
 <div id="hud-bar" class="hud-bar">
- <button class="hud-btn" id="btn-move-mode">Move Tool</button>
+ <button id="btn-move-mode" class="hud-btn">Move Tool</button>
  <button class="hud-btn" id="btn-preview">Preview</button>
  <div class="hud-divider"></div>
  <label class="hud-snap">
@@ -87,7 +88,7 @@
 </button>
 
 <div id="mobile-edit-bar">
-    <button id="m-btn-menu" class="btn mem-btn" aria-label="Menu"><i class="fa-solid fa-bars"></i></button>
+    <button id="m-btn-menu" class="btn mem-btn" aria-label="Menu"><i class="fa-solid fa-bars"></i><svg class="snake-outline" viewBox="0 0 46 46" aria-hidden="true"><rect x="0.5" y="0.5" width="45" height="45" rx="10" pathLength="100"></rect></svg></button>
     <div id="mobile-edit-menu">
         <button id="m-btn-move" class="btn mem-btn" title="Move Tool"><i class="fa-solid fa-arrows-up-down-left-right"></i></button>
         <button id="m-btn-snap" class="btn mem-btn" title="Snap to Grid"><i class="fa-solid fa-table-cells"></i></button>
@@ -128,7 +129,6 @@
    <div id="chip-active" class="search-tag"></div>
   <div id="hint-text" class="ghost-hint"></div>
    <input type="search" id="input-query" class="search-bar" name="q" placeholder="Ask anything..." autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false" inputmode="search" enterkeyhint="search">
-   <span id="typing-caret"></span>
    <div id="engine-toggle" class="engine-toggle"><span>AUTO</span></div>
    <button type="submit" id="go-arrow" class="go-arrow"><i class="fa-solid fa-arrow-right"></i></button>
   </div>
@@ -154,11 +154,11 @@
    <div class="tab-btn active" data-tab="tab-gen"><i class="fa-solid fa-house fa-fw"></i> General</div>
    <div class="tab-btn" data-tab="tab-app"><i class="fa-solid fa-palette fa-fw"></i> Appearance</div>
    <div class="tab-btn" data-tab="tab-workspace"><i class="fa-solid fa-table-cells-large fa-fw"></i> Layout</div>
-   <div class="tab-btn" data-tab="tab-search"><i class="fa-solid fa-magnifying-glass fa-fw"></i> Search</div>
+   <div class="tab-btn" data-tab="tab-search"><i class="fa-solid fa-magnifying-glass fa-fw"></i> Search &amp; Favourites</div>
    <div class="tab-btn" data-tab="tab-wid"><i class="fa-solid fa-grip fa-fw"></i> Widgets & Links</div>
    <div class="tab-btn" data-tab="tab-short"><i class="fa-solid fa-keyboard fa-fw"></i> Atts & Shortcuts</div>
    <div class="tab-btn" data-tab="tab-data"><i class="fa-solid fa-database fa-fw"></i> Data &amp; Version</div>
-   <hr style="border-color:#52525e; margin:8px 24px; width:calc(100% - 48px);">
+   <hr style="border-color:#514e5a; margin:8px 24px; width:calc(100% - 48px);">
    <div class="tab-btn" data-tab="tab-advanced"><i class="fa-solid fa-flask fa-fw"></i> Advanced</div>
   </div>
 
@@ -244,17 +244,21 @@
    </div>
     <div class="set-card">
      <label class="set-label">Autocomplete Favorites</label>
-     <span class="field-label">URL to autocomplete in search box</span>
+     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;"><span class="field-label" style="margin:0">URL to autocomplete in search box</span><button type="button" class="text-add-btn" id="btn-fav-editor" data-action="togglefaveditor">Edit as text</button></div>
      <div class="flex-row">
         <input type="text" id="inp-fav" placeholder="example.com">
         <button class="text-add-btn" data-action="addFav">Add</button>
      </div>
      <div id="list-fav" class="list-wrap" style="max-height:300px; margin-top:12px;"></div>
+     <div id="fav-editor-wrap">
+      <textarea id="fav-editor" spellcheck="false" autocomplete="off" autocapitalize="none" autocorrect="off" placeholder="example.com&#10;hello.com&#10;claude.ai"></textarea>
+      <div id="fav-editor-status">One URL per line. Saves automatically.</div>
+     </div>
     </div>
    </div>
 
    <div class="tab-pane" id="tab-app">
-    <p style="font-size:.82rem; color:#a1a1aa; line-height:1.5; margin:0 0 14px 2px;">Need to change how a specific element looks? Use <span class="tab-jump" data-tab="tab-wid">Widgets &amp; Links</span> to open its studio. This tab only handles the global theme and background.</p>
+    <p style="font-size:.82rem; color:#a2a1ab; line-height:1.5; margin:0 0 14px 2px;">Need to change how a specific element looks? Use <span class="tab-jump" data-tab="tab-wid">Widgets &amp; Links</span> to open its studio. This tab only handles the global theme and background.</p>
     <div class="set-card">
      <label class="set-label">Theme & Background</label>
      <div class="grid-2">
@@ -306,7 +310,7 @@
    <div class="tab-pane" id="tab-workspace">
     <div class="set-card">
      <label class="set-label">Visual Editor</label>
-     <p style="font-size:.88rem; color:#a1a1aa; line-height:1.5; margin:0 0 14px">Drag and resize any widget. Click a widget to select it. For deeper customization, use the <span class="tab-jump" data-tab="tab-wid">dedicated Studios</span>, where you can fine-tune every detail of each widget.</p>
+     <p style="font-size:.88rem; color:#9f9ea8; line-height:1.5; margin:0 0 14px">Drag and resize any widget. Click a widget to select it. For deeper customization, use the <span class="tab-jump" data-tab="tab-wid">dedicated Studios</span>, where you can fine-tune every detail of each widget.</p>
      <p class="mobile-only" style="font-size:.82rem; color:var(--hint); line-height:1.5; margin:0 0 14px;">In Layout mode, the editor buttons are hidden inside the ☰ (three-line) menu button.</p>
      <div class="toggle-row"><span>Snap to Grid</span><label class="switch"><input type="checkbox" id="pref-snap"><span class="slider"></span></label></div>
      <div style="display:flex; flex-direction:column; gap:10px; margin-top:12px;"><button class="btn btn-primary btn-full" id="btn-enter-gui"><i class="fa-solid fa-arrows-up-down-left-right"></i> Enter Visual Editor</button><button class="btn" id="btn-reset-layout">Reset Positions</button></div>
@@ -323,7 +327,7 @@
     <div class="set-card">
      <label class="set-label"><i class="fa-solid fa-magnifying-glass"></i> Search Box</label>
      <div class="toggle-row"><span>Show Search Box</span><label class="switch"><input type="checkbox" id="pref-search-show"><span class="slider"></span></label></div>
-     <button class="btn btn-primary btn-full" id="btn-open-search-studio" style="margin-top:12px;"><i class="fa-solid fa-up-right-from-square"></i> Customize in Studio</button>
+     <button class="btn btn-primary btn-full" id="btn-open-search-studio" style='margin-top:12px;'><i class="fa-solid fa-up-right-from-square"></i> Customize in Studio</button>
     </div>
 
     <div class="set-card">
@@ -343,7 +347,7 @@
      <div class="toggle-row"><span>Enable Custom Shortcuts</span><label class="switch"><input type="checkbox" id="pref-useatts"><span class="slider"></span></label></div>
      <div id="box-atts" style="display:none; margin-top:16px;">
      <div id="list-grps" class="list-wrap" style="max-height:400px"></div>
-     <button class="text-add-btn" data-action="addGrp" style="margin-top:8px;">+ Add Group</button>
+     <button class="text-add-btn" data-action="addGrp" style="margin-top:8px;">Add Group</button>
      <p style="font-size:.75rem; color:var(--hint); margin:10px 2px 0; line-height:1.4;">Where the query should be add {query} or %s or {msg}</p>
      </div>
     </div>
@@ -367,7 +371,7 @@
     <div class="set-card">
      <label class="set-label">Data</label>
      <div class="grid-2">
-        <button class="btn" id="btn-exp">Export</button>
+        <button id="btn-exp" class="btn">Export</button>
         <button class="btn" id="btn-imp">Import</button>
      </div>
      <div style="margin-top:16px"><button class="btn btn-danger btn-full" id="btn-rst">Reset All Defaults</button></div>
@@ -435,10 +439,10 @@
 <div id="modal-ql-shortcuts" class="modal-overlay">
     <div class="modal-box" style="width:560px; max-width:94vw; height:auto; max-height:80vh; padding:0; display:flex; flex-direction:column; grid-template-columns:none;">
         <div style="padding:18px 22px; border-bottom:1px solid #302f38; display:flex; justify-content:space-between; align-items:center;">
-            <div style="font-weight:600; font-size:1rem; color:#fbfbfe;">Quick Links Shortcut Keys</div>
+            <div style="font-weight:600; font-size:1rem; color:#fbfbff;">Quick Links Shortcut Keys</div>
             <button class="btn" id="btn-close-ql-shortcuts" style="padding:6px 10px;"><i class="fa-solid fa-xmark"></i></button>
         </div>
-        <p style="padding:0 22px; margin:14px 0 0; font-size:.8rem; color:#a1a1aa; line-height:1.4;">Click a field and press your key combination. Press Escape to clear a shortcut.</p>
+        <p style="padding:0 22px; margin:14px 0 0; font-size:.8rem; color:#a09fa9; line-height:1.4;">Click a field and press your key combination. Press Escape to clear a shortcut.</p>
         <div id="ql-shortcuts-list" style="padding:14px 22px 18px; overflow-y:auto; flex:1; display:flex; flex-direction:column; gap:8px;"></div>
         <div id="qlsc-conflicts" style="padding:0 22px 12px; font-size:.78rem; color:#ef4444; line-height:1.4;"></div>
         <div style="padding:14px 22px; border-top:1px solid #302f38; display:flex; justify-content:flex-end;">
@@ -479,8 +483,8 @@
      <option value="top">Panel: Top</option>
     </select>
     <button class="btn studio-save-exit-btn" data-save-exit="studio-clock">Save</button>
-    <button class="btn studio-desktop-revert" data-revert-studio="studio-clock" title="Revert changes"><i class="fa-solid fa-rotate-left"></i></button>
-    <button class="btn studio-mobile-action studio-mobile-revert" data-revert-studio="studio-clock" title="Revert changes"><i class="fa-solid fa-rotate-left"></i></button>
+    <button class="btn studio-desktop-revert" data-redo-studio="studio-clock" title="Redo"><i class="fa-solid fa-rotate-right"></i></button>
+    <button class="btn studio-mobile-action studio-mobile-revert" data-redo-studio="studio-clock" title="Redo"><i class="fa-solid fa-rotate-right"></i></button>
     <button class="btn btn-primary studio-mobile-action studio-mobile-save" data-save-exit="studio-clock" title="Save & Close"><i class="fa-solid fa-check"></i></button>
     <button class="btn" id="studio-clock-close2" style="padding:6px 10px"><i class="fa-solid fa-xmark"></i></button>
    </div>
@@ -493,7 +497,7 @@
    <div class="set-card">
     <label class="set-label"><i class="fa-solid fa-sliders"></i> Functionality</label>
     <div class="check-row"><input type="checkbox" id="studio-chk-date"><label for="studio-chk-date">Show date</label></div>
-    <div class="check-row"><input type="checkbox" id="studio-chk-24h"><label for="studio-chk-24h">Show in 24h format</label></div>
+    <div class="check-row"><input type="checkbox" id="studio-chk-hr24"><label for="studio-chk-hr24">Show in 24h format</label></div>
     <div class="check-row"><input type="checkbox" id="studio-chk-seconds"><label for="studio-chk-seconds">Show seconds</label></div>
     <div class="check-row"><input type="checkbox" id="studio-chk-greet"><label for="studio-chk-greet">Show greeting</label></div>
     <div class="check-row"><input type="checkbox" id="studio-chk-blink"><label for="studio-chk-blink">Show blinking : animation</label></div>
@@ -517,8 +521,8 @@
      <div style="margin-top:10px">
       <span class="set-sublabel">Date Text Color</span>
       <div class="flex-row">
-       <input type="text" id="pref-sclock-datecolor" placeholder="e.g. #a6adc8 or var(--subtext)" style="flex:1">
-       <input type="color" id="pref-sclock-datecolor-picker" value="#a6adc8" style="width:42px; height:38px; padding:4px">
+       <input type="text" id="pref-sclock-date-color" placeholder="e.g. #a6adc8 or var(--subtext)" style="flex:1">
+       <input type="color" id="pref-sclock-date-color-picker" value="#a6adc8" style="width:42px; height:38px; padding:4px">
       </div>
      </div>
     </div>
@@ -611,8 +615,8 @@
      <option value="top">Panel: Top</option>
     </select>
     <button class="btn studio-save-exit-btn" data-save-exit="studio-search">Save</button>
-    <button class="btn studio-desktop-revert" data-revert-studio="studio-search" title="Revert changes"><i class="fa-solid fa-rotate-left"></i></button>
-    <button class="btn studio-mobile-action studio-mobile-revert" data-revert-studio="studio-search" title="Revert changes"><i class="fa-solid fa-rotate-left"></i></button>
+    <button class="btn studio-desktop-revert" data-redo-studio="studio-search" title="Redo"><i class="fa-solid fa-rotate-right"></i></button>
+    <button class="btn studio-mobile-action studio-mobile-revert" data-redo-studio="studio-search" title="Redo"><i class="fa-solid fa-rotate-right"></i></button>
     <button class="btn btn-primary studio-mobile-action studio-mobile-save" data-save-exit="studio-search" title="Save & Close"><i class="fa-solid fa-check"></i></button>
     <button class="btn" id="studio-search-close2" style="padding:6px 10px"><i class="fa-solid fa-xmark"></i></button>
    </div>
@@ -675,19 +679,16 @@
    </div>
    <div class="set-card">
     <label class="set-label"><i class="fa-solid fa-arrow-right"></i> Button Styling</label>
-    <div class="range-row"><div class="range-top"><span class="set-sublabel" style="margin:0">Width</span><span class="range-val" id="val-sbtn-w">52px</span></div><input type="range" id="pref-sbtn-w" min="24" max="140" step="1"></div>
-    <div class="range-row"><div class="range-top"><span class="set-sublabel" style="margin:0">Height</span><span class="range-val" id="val-sbtn-h">100%</span></div><input type="range" id="pref-sbtn-h" min="20" max="100" step="1"></div>
-    <div class="range-row"><div class="range-top"><span class="set-sublabel" style="margin:0">Roundness</span><span class="range-val" id="val-sbtn-radius">14px</span></div><input type="range" id="pref-sbtn-radius" min="0" max="40" step="1"></div>
-    <div class="range-row"><div class="range-top"><span class="set-sublabel" style="margin:0">Opacity</span><span class="range-val" id="val-sbtn-op">100%</span></div><input type="range" id="pref-sbtn-op" min="0" max="100" step="1"></div>
+    <div class="range-row"><div class="range-top"><span class="set-sublabel" style="margin:0">Container Width</span><span class="range-val" id="val-sbtn-w">52px</span></div><input type="range" id="pref-sbtn-w" min="24" max="140" step="1"></div>
+    <div class="range-row"><div class="range-top"><span class="set-sublabel" style="margin:0">Container Height</span><span class="range-val" id="val-sbtn-h">100%</span></div><input type="range" id="pref-sbtn-h" min="20" max="100" step="1"></div>
+    <div class="range-row"><div class="range-top"><span class="set-sublabel" style="margin:0">Container Roundness</span><div style="display:flex; align-items:center; gap:8px;"><button type="button" id="btn-sbtn-radius-match" title="Match search box roundness" style="background:transparent; border:none; color:var(--subtext); font-size:.7rem; font-weight:600; letter-spacing:.06em; text-transform:uppercase; cursor:pointer; padding:2px 4px; font-family:inherit;">Match Search Box</button><span class="range-val" id="val-sbtn-radius">14px</span></div></div><input type="range" id="pref-sbtn-radius" min="0" max="40" step="1"></div>
+    <div class="range-row"><div class="range-top"><span class="set-sublabel" style="margin:0">Container Opacity</span><span class="range-val" id="val-sbtn-op">100%</span></div><input type="range" id="pref-sbtn-op" min="0" max="100" step="1"></div>
     <div style="margin-top:8px">
-     <span class="set-sublabel">Color</span>
-     <div class="flex-row"><input type="text" id="pref-sbtn-color" placeholder="e.g. var(--subtext) or #a6adc8" style="flex:1"><input type="color" id="pref-sbtn-color-picker" value="#a6adc8" style="width:42px; height:38px; padding:4px"></div>
+     <span class="set-sublabel">Container Color</span>
+     <div class="flex-row"><input type="text" id="pref-sbtn-bg" placeholder="e.g. var(--overlay) or #1e1e2e" style="flex:1"><input type="color" id="pref-sbtn-bg-picker" value="#1e1e2e" style="width:42px; height:38px; padding:4px"></div>
     </div>
-    <div class="toggle-row" style="margin-top:12px"><span>Override Hover Highlight</span><label class="switch"><input type="checkbox" id="pref-sbtn-hover-override"><span class="slider"></span></label></div>
-    <div id="box-sbtn-hover" style="display:none; margin-bottom:10px;">
-     <div class="flex-row"><input type="text" id="pref-sbtn-hover-color" placeholder="Hover color (e.g. #cba6f7)" style="flex:1"><input type="color" id="pref-sbtn-hover-color-picker" value="#cba6f7" style="width:42px; height:38px; padding:4px"></div>
-    </div>
-    <div style="margin-top:8px">
+    <hr style="border:none; border-top:1px solid var(--border); margin:18px 0 16px; opacity:.6;">
+    <div>
      <span class="set-sublabel">Arrow Icon</span>
      <select id="pref-sbtn-icon">
       <option value="arrow">Arrow</option>
@@ -698,6 +699,12 @@
       <option value="external">External Arrow</option>
       <option value="search">Search</option>
      </select>
+    </div>
+    <div class="range-row"><div class="range-top"><span class="set-sublabel" style="margin:0">Arrow Position</span><span class="range-val" id="val-sbtn-icon-x">0px</span></div><input type="range" id="pref-sbtn-icon-x" min="-40" max="40" step="1"></div>
+    <div class="range-row"><div class="range-top"><span class="set-sublabel" style="margin:0">Arrow Opacity</span><span class="range-val" id="val-sbtn-icon-op">100%</span></div><input type="range" id="pref-sbtn-icon-op" min="0" max="100" step="1"></div>
+    <div style="margin-top:8px">
+     <span class="set-sublabel">Arrow Color</span>
+     <div class="flex-row"><input type="text" id="pref-sbtn-color" placeholder="e.g. var(--subtext) or #a6adc8" style="flex:1"><input type="color" id="pref-sbtn-color-picker" value="#a6adc8" style="width:42px; height:38px; padding:4px"></div>
     </div>
    </div>
   </div>
@@ -736,8 +743,8 @@
      <option value="top">Panel: Top</option>
     </select>
     <button class="btn studio-save-exit-btn" data-save-exit="studio-links">Save</button>
-    <button class="btn studio-desktop-revert" data-revert-studio="studio-links" title="Revert changes"><i class="fa-solid fa-rotate-left"></i></button>
-    <button class="btn studio-mobile-action studio-mobile-revert" data-revert-studio="studio-links" title="Revert changes"><i class="fa-solid fa-rotate-left"></i></button>
+    <button class="btn studio-desktop-revert" data-redo-studio="studio-links" title="Redo"><i class="fa-solid fa-rotate-right"></i></button>
+    <button class="btn studio-mobile-action studio-mobile-revert" data-redo-studio="studio-links" title="Redo"><i class="fa-solid fa-rotate-right"></i></button>
     <button class="btn btn-primary studio-mobile-action studio-mobile-save" data-save-exit="studio-links" title="Save & Close"><i class="fa-solid fa-check"></i></button>
     <button class="btn" id="studio-links-close2" style="padding:6px 10px"><i class="fa-solid fa-xmark"></i></button>
    </div>
@@ -784,7 +791,7 @@
     <span class="set-sublabel" style="margin-top:-4px; margin-bottom:12px;">Leave empty to use the theme default.</span>
     <div style="margin-top:4px">
      <span class="set-sublabel">Background</span>
-     <div class="flex-row"><input type="text" id="pref-sql-bgcolor" placeholder="e.g. var(--overlay) or #1e1e2e" style="flex:1"><input type="color" id="pref-sql-bgcolor-picker" value="#1e1e2e" style="width:42px; height:38px; padding:4px"></div>
+     <div class="flex-row"><input type="text" id="pref-sql-bg-color" placeholder="e.g. var(--overlay) or #1e1e2e" style="flex:1"><input type="color" id="pref-sql-bg-color-picker" value="#1e1e2e" style="width:42px; height:38px; padding:4px"></div>
     </div>
     <div class="range-row" style="margin-top:10px"><div class="range-top"><span class="set-sublabel" style="margin:0">Background Opacity</span><span class="range-val" id="val-sql-op">100%</span></div><input type="range" id="pref-sql-op" min="20" max="100" step="1"></div>
     <div class="range-row"><div class="range-top"><span class="set-sublabel" style="margin:0">Blur</span><span class="range-val" id="val-sql-blur">10px</span></div><input type="range" id="pref-sql-blur" min="0" max="40" step="1"></div>
@@ -837,154 +844,113 @@
    <div class="set-card">
     <label class="set-label"><i class="fa-solid fa-up-right-from-square"></i> Manage Links</label>
     <div id="studio-ql-list" style="display:flex; flex-direction:column; gap:8px; max-height:280px; overflow-y:auto"></div>
-    <div class="flex-row" style="margin-top:10px"><input type="text" id="studio-ql-name" placeholder="Name"><input type="text" id="studio-ql-url" placeholder="https://"><button class="text-add-btn" id="studio-ql-add">+ Add</button></div>
+    <div class="flex-row" style="margin-top:10px"><input type="text" id="studio-ql-name" placeholder="Name"><input type="text" id="studio-ql-url" placeholder="https://"><button class="text-add-btn" id="studio-ql-add">Add</button></div>
    </div>
   </div>
  </div>
 </div>
 
 <script>
-(function(){
-  var banner = document.getElementById('update-banner');
-  var bannerText = document.getElementById('update-banner-text');
-  var dismissBtn = document.getElementById('update-dismiss');
-  var checkInProgress = false;
-  var latestVersion = null;
-  var hideTimer = null;
-  var reloading = false;
-  var swReg = null;
+(() => {
+  const banner = document.getElementById('update-banner');
+  const bannertext = document.getElementById('update-banner-text');
+  const dismissbtn = document.getElementById('update-dismiss');
+  let checkinprogress = false;
+  let latestversion = null;
+  let hidetimer = null;
+  let reloading = false;
+  let swreg = null;
 
-  function getKnownVersion() {
-    try { return (typeof userPrefs !== 'undefined' && userPrefs && userPrefs.knownVersion) || null; }
-    catch(e) { return null; }
-  }
-  function setKnownVersion(v) {
+  const getknownversion = () => {
+    try { return (typeof userprefs !== 'undefined' && userprefs && userprefs.knownversion) || null; }
+    catch { return null; }
+  };
+
+  const setknownversion = (v) => {
     try {
-      if (typeof userPrefs === 'undefined' || !userPrefs || typeof save !== 'function') return;
-      userPrefs.knownVersion = v;
-      var hasPrefs = false;
+      if (typeof userprefs === 'undefined' || !userprefs || typeof save !== 'function') return;
+      userprefs.knownversion = v;
+      let hasprefs = false;
       try {
-        hasPrefs = !!(localStorage.getItem('anoxle_prefs') ||
+        hasprefs = !!(localStorage.getItem('anoxle_prefs') ||
                       localStorage.getItem('user_prefs_v14') ||
                       localStorage.getItem('user_prefs_v13') ||
                       localStorage.getItem('user_prefs_v12') ||
                       localStorage.getItem('onboarding_shown'));
-      } catch(e) { hasPrefs = true; }
-      if (hasPrefs) save();
-    } catch(e) {}
-  }
-  function hideBanner() { if (banner) banner.classList.remove('show'); }
-  function setBanner(text, opts) {
-    opts = opts || {};
-    if (!banner || !bannerText) return;
-    clearTimeout(hideTimer);
-    bannerText.textContent = text;
+      } catch { hasprefs = true; }
+      if (hasprefs) save();
+    } catch {}
+  };
+
+  const hidebanner = () => { if (banner) banner.classList.remove('show'); };
+
+  const setbanner = (text, opts = {}) => {
+    if (!banner || !bannertext) return;
+    clearTimeout(hidetimer);
+    bannertext.textContent = text;
     banner.classList.add('show');
-    if (opts.autoHideMs) hideTimer = setTimeout(hideBanner, opts.autoHideMs);
-  }
-  function setVmStatus(text, isError) {
-    var el = document.getElementById('vm-status');
+    if (opts.autoHideMs) hidetimer = setTimeout(hidebanner, opts.autoHideMs);
+  };
+
+  const setvmstatus = (text, iserror) => {
+    const el = document.getElementById('vm-status');
     if (el) {
       el.textContent = text;
-      el.style.color = isError ? '#ef4444' : 'var(--subtext)';
+      el.style.color = iserror ? '#ef4444' : 'var(--subtext)';
     }
-  }
-  function updateVmUI() {
-    var cur = document.getElementById('vm-current');
-    var lat = document.getElementById('vm-latest');
-    if (cur) cur.textContent = getKnownVersion() || '—';
-    if (lat) lat.textContent = latestVersion || '—';
-  }
-  function armOnlineRetry() {
+  };
+
+  const updatevmui = () => {
+    const cur = document.getElementById('vm-current');
+    const lat = document.getElementById('vm-latest');
+    if (cur) cur.textContent = getknownversion() || '—';
+    if (lat) lat.textContent = latestversion || '—';
+  };
+
+  const armonlineretry = () => {
     window.addEventListener('online', function handler() {
       window.removeEventListener('online', handler);
-      checkForUpdates();
+      checkforupdates();
     });
-  }
+  };
 
-  function log(msg, isError) {
-    var fn = isError ? console.warn : console.log;
+  const log = (msg, iserror) => {
+    const fn = iserror ? console.warn : console.log;
     fn.call(console, '[update] ' + msg);
-  }
+  };
 
-  async function checkForUpdates(manual) {
-    if (checkInProgress) return;
-    checkInProgress = true;
-    setVmStatus('Checking…', false);
-    log('checking for updates…');
-
-    if (!navigator.onLine) {
-      var offlineMsg = 'Checking for updates failed due to network issues.';
-      if (manual) setBanner(offlineMsg, { autoHideMs: 4000 });
-      setVmStatus(offlineMsg, true);
-      log(offlineMsg, true);
-      checkInProgress = false;
-      armOnlineRetry();
-      return;
-    }
-
+  const performforcereinstall = async () => {
+    setbanner('Reinstalling…', {});
+    setvmstatus('Reinstalling…', false);
     try {
-      var res = await fetch('./version.txt?t=' + Date.now(), { cache: 'no-store' });
-      if (!res.ok) throw new Error('HTTP ' + res.status);
-      var text = (await res.text()).trim();
-      if (!text) throw new Error('Empty version file');
-      latestVersion = text;
-      updateVmUI();
-
-      var known = getKnownVersion();
-      if (!known) {
-        setKnownVersion(text);
-        setVmStatus('Up to date', false);
-        log('first run — recorded version ' + text);
-        checkInProgress = false;
-        return;
+      if ('serviceWorker' in navigator) {
+        const regs = await navigator.serviceWorker.getRegistrations();
+        await Promise.all(regs.map(r => r.unregister()));
       }
-      if (known === text) {
-        setVmStatus('Up to date', false);
-        log('up to date (' + text + ')');
-        checkInProgress = false;
-        return;
-      }
+      const keys = await caches.keys();
+      await Promise.all(keys.map(k => caches.delete(k)));
+    } catch {}
+    location.reload();
+  };
 
-      setKnownVersion(text);
-      setVmStatus('Updating to ' + text + '…', false);
-      log('update available — ' + known + ' → ' + text);
-      await triggerSwUpdate();
-    } catch (err) {
-      var msg = navigator.onLine
-        ? 'Checking for updates failed: ' + (err.message || 'unknown error')
-        : 'Checking for updates failed due to network issues.';
-      if (manual) setBanner(msg, { autoHideMs: 5000 });
-      setVmStatus(msg, true);
-      log(msg, true);
-      armOnlineRetry();
-      checkInProgress = false;
-    }
-  }
+  const triggerswupdate = async () => {
+    if (!('serviceWorker' in navigator)) { performforcereinstall(); return; }
+    const reg = swreg || await navigator.serviceWorker.getRegistration();
+    if (!reg) { performforcereinstall(); return; }
 
-  async function triggerSwUpdate() {
-    if (!('serviceWorker' in navigator)) { performForceReinstall(); return; }
-    var reg = swReg || await navigator.serviceWorker.getRegistration();
-    if (!reg) { performForceReinstall(); return; }
+    if (reg.waiting) { reg.waiting.postMessage({ type: 'SKIP_WAITING' }); return; }
 
-    if (reg.waiting) {
-      reg.waiting.postMessage({ type: 'SKIP_WAITING' });
-      return;
-    }
+    try { await reg.update(); } catch {}
 
-    try { await reg.update(); } catch(e) {}
-    await new Promise(function(r){ setTimeout(r, 100); });
+    await new Promise(r => setTimeout(r, 100));
 
-    if (reg.waiting) {
-      reg.waiting.postMessage({ type: 'SKIP_WAITING' });
-      return;
-    }
+    if (reg.waiting) { reg.waiting.postMessage({ type: 'SKIP_WAITING' }); return; }
 
     if (reg.installing) {
-      var nw = reg.installing;
-      var outcome = await new Promise(function(resolve){
-        var t = setTimeout(function(){ resolve('timeout'); }, 5000);
-        nw.addEventListener('statechange', function(){
+      const nw = reg.installing;
+      const outcome = await new Promise(resolve => {
+        const t = setTimeout(() => resolve('timeout'), 5000);
+        nw.addEventListener('statechange', () => {
           if (nw.state === 'installed') { clearTimeout(t); resolve('installed'); }
           else if (nw.state === 'redundant') { clearTimeout(t); resolve('failed'); }
         });
@@ -995,60 +961,103 @@
       }
     }
 
-    performForceReinstall();
-  }
+    performforcereinstall();
+  };
 
-  async function performForceReinstall() {
-    setBanner('Reinstalling…', {});
-    setVmStatus('Reinstalling…', false);
+  const checkforupdates = async (manual) => {
+    if (checkinprogress) return;
+    checkinprogress = true;
+    setvmstatus('Checking…', false);
+    log('checking for updates…');
+
+    if (!navigator.onLine) {
+      const offlinemsg = 'Checking for updates failed due to network issues.';
+      if (manual) setbanner(offlinemsg, { autoHideMs: 4000 });
+      setvmstatus(offlinemsg, true);
+      log(offlinemsg, true);
+      checkinprogress = false;
+      armonlineretry();
+      return;
+    }
+
     try {
-      if ('serviceWorker' in navigator) {
-        var regs = await navigator.serviceWorker.getRegistrations();
-        await Promise.all(regs.map(function(r){ return r.unregister(); }));
-      }
-      var keys = await caches.keys();
-      await Promise.all(keys.map(function(k){ return caches.delete(k); }));
-    } catch(e) {}
-    location.reload();
-  }
+      const res = await fetch('./version.txt?t=' + Date.now(), { cache: 'no-store' });
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      const text = (await res.text()).trim();
+      if (!text) throw new Error('Empty version file');
+      latestversion = text;
+      updatevmui();
 
-  if (dismissBtn) dismissBtn.onclick = hideBanner;
+      const known = getknownversion();
+      if (!known) {
+        setknownversion(text);
+        setvmstatus('Up to date', false);
+        log('first run — recorded version ' + text);
+        updatevmui();
+        checkinprogress = false;
+        return;
+      }
+      if (known === text) {
+        setvmstatus('Up to date', false);
+        log('up to date (' + text + ')');
+        checkinprogress = false;
+        return;
+      }
+
+      setknownversion(text);
+      setvmstatus('Updating to ' + text + '…', false);
+      log('update available — ' + known + ' → ' + text);
+      await triggerswupdate();
+    } catch (err) {
+      const msg = navigator.onLine
+        ? 'Checking for updates failed: ' + (err.message || 'unknown error')
+        : 'Checking for updates failed due to network issues.';
+      if (manual) setbanner(msg, { autoHideMs: 5000 });
+      setvmstatus(msg, true);
+      log(msg, true);
+      armonlineretry();
+      checkinprogress = false;
+    }
+  };
+
+  if (dismissbtn) dismissbtn.onclick = hidebanner;
 
   if ('serviceWorker' in navigator) {
-    var hadControllerAtLoad = !!navigator.serviceWorker.controller;
-    navigator.serviceWorker.addEventListener('controllerchange', function(){
-      if (!hadControllerAtLoad) return;
+    const hadcontrolleratload = !!navigator.serviceWorker.controller;
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+      if (!hadcontrolleratload) return;
       if (reloading) return;
       reloading = true;
       location.reload();
     });
-    window.addEventListener('load', function(){
+    window.addEventListener('load', () => {
       navigator.serviceWorker.register('./sw.js', { updateViaCache: 'none' })
-        .then(function(reg){ swReg = reg; })
-        .catch(function(err){ console.warn('[SW] registration failed:', err); });
+        .then(reg => { swreg = reg; })
+        .catch(err => { console.warn('[SW] registration failed:', err); });
     });
   }
 
-  function wireSettingsButtons() {
-    var checkBtn = document.getElementById('vm-check');
-    var forceBtn = document.getElementById('vm-force');
-    if (checkBtn) checkBtn.onclick = function(){ checkForUpdates(true); };
-    if (forceBtn) forceBtn.onclick = function(){
-      var msg = 'This will reset everything to defaults: your settings, uploaded backgrounds and videos, custom fonts, and the offline cache. The page will reload with a clean state afterward.';
-      if (typeof showConfirm === 'function') {
-        showConfirm('Force reinstall?', msg, performForceReinstall);
+  const wiresettingsbuttons = () => {
+    const checkbtn = document.getElementById('vm-check');
+    const forcebtn = document.getElementById('vm-force');
+    if (checkbtn) checkbtn.onclick = () => { checkforupdates(true); };
+    if (forcebtn) forcebtn.onclick = () => {
+      const msg = 'This will reset everything to defaults: your settings, uploaded backgrounds and videos, custom fonts, and the offline cache. The page will reload with a clean state afterward.';
+      if (typeof showconfirm === 'function') {
+        showconfirm('Force reinstall?', msg, performforcereinstall);
       } else if (confirm(msg)) {
-        performForceReinstall();
+        performforcereinstall();
       }
     };
-    updateVmUI();
-  }
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', wireSettingsButtons);
-  else wireSettingsButtons();
+    updatevmui();
+  };
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', wiresettingsbuttons);
+  else wiresettingsbuttons();
 
-  window.checkForUpdates = checkForUpdates;
-  window.addEventListener('load', function(){ setTimeout(checkForUpdates, 200); });
+  window.checkforupdates = checkforupdates;
+  window.updatevmui = updatevmui;
+  window.addEventListener('load', () => { setTimeout(checkforupdates, 200); });
 })();
 </script>
 </body>
-</html
+</html>

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'anoxle-startpage-v2026.09.28.0146';
+const CACHE_NAME = 'anoxle-startpage-v2026.10.02.0754';
 const SHELL_ASSETS = ["./","./index.html","./assets/app.js","./assets/app.css","./assets/icon.png","./assets/manifest.json"];
 
 self.addEventListener('install', e => {
