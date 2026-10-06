@@ -986,9 +986,21 @@
     performforcereinstall();
   };
 
+  const waitforprefs = (timeout = 10000) => new Promise(resolve => {
+    const start = Date.now();
+    const check = () => {
+      let ready = false;
+      try { ready = (typeof userprefs !== 'undefined' && !!userprefs); } catch {}
+      if (ready || Date.now() - start > timeout) { resolve(ready); return; }
+      setTimeout(check, 100);
+    };
+    check();
+  });
+
   const checkforupdates = async (manual) => {
     if (checkinprogress) return;
     checkinprogress = true;
+    await waitforprefs();
     setvmstatus('Checking…', false);
     log('checking for updates…');
 
@@ -1013,14 +1025,14 @@
       const known = getknownversion();
       if (!known) {
         setknownversion(text);
-        setvmstatus('Up to date', false);
+        setvmstatus('Latest', false);
         log('first run — recorded version ' + text);
         updatevmui();
         checkinprogress = false;
         return;
       }
       if (known === text) {
-        setvmstatus('Up to date', false);
+        setvmstatus('Latest', false);
         log('up to date (' + text + ')');
         checkinprogress = false;
         return;
