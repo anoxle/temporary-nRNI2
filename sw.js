@@ -1,8 +1,8 @@
-const CACHE_NAME = 'anoxle-startpage-v2026.10.02.090958';
+const CACHE_NAME = 'anoxle-startpage-v2026.10.06.075619';
 const FONT_CACHE = 'anoxle-fonts-v1';
-const SHELL_ASSETS = ["./","./index.html","./assets/app.js","./assets/app.css","./icon.png","./assets/icon.png","./manifest.json","./assets/manifest.json"];
-const REQUIRED = ['./index.html', './assets/app.js'];
-const BYPASS = ['version.txt', 'default.json', 'default-mobile.json', 'sw.js'];
+const SHELL_ASSETS = ["./","./index.html","./assets/app.js","./assets/app.css","./icon.png","./assets/icon.png","./manifest.json","./assets/manifest.json","./default.json","./default-mobile.json"];
+const REQUIRED = ['./index.html', './assets/app.js', './default.json'];
+const BYPASS = ['version.txt', 'sw.js'];
 
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE_NAME).then(cache => Promise.all(SHELL_ASSETS.map(path =>
