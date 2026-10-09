@@ -38,7 +38,7 @@
     "h": 40
   },
   "qlPos": {
-    "top": 62.51411282286353,
+    "top": 61.76863891445032,
     "left": 50,
     "w": 640,
     "h": "auto"
@@ -84,7 +84,7 @@
   "searchBorderW": 1,
   "searchBlur": 6,
   "searchShadow": 0,
-  "searchOpacity": 100,
+  "searchOpacity": 48,
   "searchStyle": "custom",
   "searchPlaceholder": "Search",
   "searchPlaceholderColor": "#FFFFFF61",

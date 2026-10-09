@@ -1,4 +1,4 @@
-const CACHE_NAME = 'anoxle-startpage-v2026.10.09.113333';
+const CACHE_NAME = 'anoxle-startpage-v2026.10.09.120226';
 const FONT_CACHE = 'anoxle-fonts-v1';
 const SHELL_ASSETS = ["./","./index.html","./assets/app.js","./assets/app.css","./icon.png","./assets/icon.png","./manifest.json","./assets/manifest.json","./default.json","./default-mobile.json"];
 const REQUIRED = ['./index.html', './assets/app.js', './default.json'];
