@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <!-- SUTURE: DO NOT DELETE SPLITTER MARKERS NO MATTER WHAT -->
 <html lang="en">
@@ -99,7 +98,7 @@
  <button class="hud-btn hud-btn-ghost" id="btn-cancel-pos">Cancel</button>
  <button class="hud-btn hud-btn-primary" id="btn-save-pos">Save</button>
 </div>
-<div id="hud-hint" class="hud-hint">Select an element to use Move Tool</div>
+<div id="hud-hint" class="hud-hint">Select an widget to use the Move Tool</div>
 
 <div id="preview-exit" style="display:none; position:fixed; top:16px; left:50%; transform:translateX(-50%); z-index:150; background:var(--overlay); border:1px solid var(--border); border-radius:8px; padding:4px;">
     <button class="hud-btn hud-btn-primary" id="btn-exit-preview">Exit Preview</button>
@@ -176,7 +175,7 @@
    <div class="tab-btn active" data-tab="tab-gen"><i class="fa-solid fa-house fa-fw"></i> General</div>
    <div class="tab-btn" data-tab="tab-app"><i class="fa-solid fa-palette fa-fw"></i> Appearance</div>
    <div class="tab-btn" data-tab="tab-workspace"><i class="fa-solid fa-table-cells-large fa-fw"></i> Layout</div>
-   <div class="tab-btn" data-tab="tab-search"><i class="fa-solid fa-magnifying-glass fa-fw"></i> Search &amp; Favourites</div>
+   <div class="tab-btn" data-tab="tab-search"><i class="fa-solid fa-magnifying-glass fa-fw"></i> Search &amp; Favorites</div>
    <div class="tab-btn" data-tab="tab-wid"><i class="fa-solid fa-grip fa-fw"></i> Widgets & Links</div>
    <div class="tab-btn" data-tab="tab-short"><i class="fa-solid fa-keyboard fa-fw"></i> Atts & Shortcuts</div>
    <div class="tab-btn" data-tab="tab-data"><i class="fa-solid fa-database fa-fw"></i> Data &amp; Version</div>
@@ -256,7 +255,7 @@
        <div id="box-cust-ai-wrapper" style="display:none; margin-top:6px;">
            <span class="field-label">Custom AI URL</span>
            <input type="text" id="pref-custaiurl" placeholder="https://custom-ai.com/chat?q={query}">
-           <p style="font-size:.75rem; color:var(--hint); margin:4px 0 0; line-height:1.4;">Where the query should be add {query} or %s or {msg}</p>
+           <p style="font-size:.75rem; color:var(--hint); margin:4px 0 0; line-height:1.4;">Use {query}, %s, or {msg} on where the query is</p>
        </div>
        <div style="margin-top:14px;">
           <span class="field-label">Shortcut Key</span>
@@ -280,7 +279,7 @@
    </div>
 
    <div class="tab-pane" id="tab-app">
-    <p style="font-size:.82rem; color:#a2a1ab; line-height:1.5; margin:0 0 14px 2px;">Need to change how a specific element looks? Use <span class="tab-jump" data-tab="tab-wid">Widgets &amp; Links</span> to open its studio. This tab only handles the global theme and background.</p>
+    <p style="font-size:.82rem; color:#a2a1ab; line-height:1.5; margin:0 0 14px 2px;">Want to change how a specific widget looks? Open its studio from <span class="tab-jump" data-tab="tab-wid">Widgets &amp; Links</span>. This tab is just for the global theme and background.</p>
     <div class="set-card">
      <label class="set-label">Theme & Background</label>
      <div class="grid-2">
@@ -322,17 +321,12 @@
      <label class="set-label">Search Box Style</label>
      <button class="btn btn-primary btn-full" id="btn-customize-search-appearance"><i class="fa-solid fa-sliders"></i> Customize</button>
     </div>
-    <div class="set-card">
-     <label class="set-label">Tip Bar Style</label>
-     <span class="set-sublabel" style="margin-top:-4px; margin-bottom:12px;">Style the keyboard shortcuts hint at the bottom of the page.</span>
-     <div class="preset-cards" id="help-bar-preset-cards"></div>
-    </div>
    </div>
 
    <div class="tab-pane" id="tab-workspace">
     <div class="set-card">
      <label class="set-label">Visual Editor</label>
-     <p style="font-size:.88rem; color:#9f9ea8; line-height:1.5; margin:0 0 14px">Drag and resize any widget. Click a widget to select it. For deeper customization, use the <span class="tab-jump" data-tab="tab-wid">dedicated Studios</span>, where you can fine-tune every detail of each widget.</p>
+     <p style="font-size:.88rem; color:#9f9ea8; line-height:1.5; margin:0 0 14px">Drag and resize any widget. Click a widget to select it. For deeper customization, use the <span class="tab-jump" data-tab="tab-wid">dedicated Studios</span>, where you can customize every bit of each widget.</p>
      <p class="mobile-only" style="font-size:.82rem; color:var(--hint); line-height:1.5; margin:0 0 14px;">In Layout mode, the editor buttons are hidden inside the ☰ (three-line) menu button.</p>
      <div class="toggle-row"><span>Snap to Grid</span><label class="switch"><input type="checkbox" id="pref-snap"><span class="slider"></span></label></div>
      <div style="display:flex; flex-direction:column; gap:10px; margin-top:12px;"><button class="btn btn-primary btn-full" id="btn-enter-gui"><i class="fa-solid fa-arrows-up-down-left-right"></i> Enter Visual Editor</button><button class="btn" id="btn-reset-layout">Reset Positions</button></div>
@@ -370,14 +364,14 @@
      <div id="box-atts" style="display:none; margin-top:16px;">
      <div id="list-grps" class="list-wrap" style="max-height:400px"></div>
      <button class="text-add-btn" data-action="addGrp" style="margin-top:8px;">Add Group</button>
-     <p style="font-size:.75rem; color:var(--hint); margin:10px 2px 0; line-height:1.4;">Where the query should be add {query} or %s or {msg}</p>
+     <p style="font-size:.75rem; color:var(--hint); margin:10px 2px 0; line-height:1.4;">Use {query}, %s, or {msg} on where the query is</p>
      </div>
     </div>
     <div class="set-card">
      <label class="set-label">Shortcuts</label>
      <p style="font-size:.85rem; color:var(--subtext); margin-top:-8px; margin-bottom:10px;">Global keybinds for built-in actions. Click a field, then press your key combination. Press Escape to clear.</p>
      <div class="kb-row"><span>Focus Search</span><input type="text" id="sc-input-focus-search" class="kb-input" readonly placeholder="Default: /"></div>
-     <div class="kb-row"><span>Open Settings</span><input type="text" id="sc-input-open-settings" class="kb-input" readonly placeholder="Default: ctrl+,"></div>
+     <div class="kb-row"><span>Open Preferences</span><input type="text" id="sc-input-open-settings" class="kb-input" readonly placeholder="Default: ctrl+,"></div>
      <div class="kb-row"><span>AI Platform</span><input type="text" id="sc-input-ai-platform" class="kb-input" readonly placeholder="Default: alt+a"></div>
      <div class="kb-row"><span>Toggle Force Search</span><input type="text" id="sc-input-toggle" class="kb-input" readonly placeholder="Default: tab"></div>
      <div id="sc-conflicts" style="font-size:.78rem; color:#ef4444; margin-top:10px; line-height:1.4;"></div>
@@ -875,75 +869,72 @@
 <script>
 (() => {
   const banner = document.getElementById('update-banner');
-  const bannertext = document.getElementById('update-banner-text');
-  const dismissbtn = document.getElementById('update-dismiss');
-  let checkinprogress = false;
-  let latestversion = null;
-  let hidetimer = null;
+  const bannerText = document.getElementById('update-banner-text');
+  const dismissBtn = document.getElementById('update-dismiss');
+  let checking = false;
+  let latestVer = null;
+  let hideTimer = null;
   let reloading = false;
-  let swreg = null;
+  let swReg = null;
 
-  const getknownversion = () => {
-    try { return (typeof userprefs !== 'undefined' && userprefs && userprefs.knownversion) || null; }
-    catch { return null; }
+  const knownVerKey = 'anoxle_known_version';
+
+  const getKnownVer = () => {
+    try {
+      const v = localStorage.getItem(knownVerKey);
+      if (v) return v;
+      if (typeof prefs !== 'undefined' && prefs && prefs.knownversion) return prefs.knownversion;
+      return null;
+    } catch { return null; }
   };
 
-  const setknownversion = (v) => {
+  const setKnownVer = (v) => {
+    try { localStorage.setItem(knownVerKey, v); } catch {}
     try {
-      if (typeof userprefs === 'undefined' || !userprefs || typeof save !== 'function') return;
-      userprefs.knownversion = v;
-      let hasprefs = false;
-      try {
-        hasprefs = !!(localStorage.getItem('anoxle_prefs') ||
-                      localStorage.getItem('user_prefs_v14') ||
-                      localStorage.getItem('user_prefs_v13') ||
-                      localStorage.getItem('user_prefs_v12') ||
-                      localStorage.getItem('onboarding_shown'));
-      } catch { hasprefs = true; }
-      if (hasprefs) save();
+      if (typeof prefs !== 'undefined' && prefs) prefs.knownversion = v;
     } catch {}
   };
 
-  const hidebanner = () => { if (banner) banner.classList.remove('show'); };
+  const hideBanner = () => { if (banner) banner.classList.remove('show'); };
 
-  const setbanner = (text, opts = {}) => {
-    if (!banner || !bannertext) return;
-    clearTimeout(hidetimer);
-    bannertext.textContent = text;
+  const setBanner = (text, opts = {}) => {
+    if (!banner || !bannerText) return;
+    clearTimeout(hideTimer);
+    bannerText.textContent = text;
     banner.classList.add('show');
-    if (opts.autoHideMs) hidetimer = setTimeout(hidebanner, opts.autoHideMs);
+    if (opts.autoHideMs) hideTimer = setTimeout(hideBanner, opts.autoHideMs);
   };
 
-  const setvmstatus = (text, iserror) => {
+  const setVmStatus = (text, isError) => {
     const el = document.getElementById('vm-status');
     if (el) {
       el.textContent = text;
-      el.style.color = iserror ? '#ef4444' : 'var(--subtext)';
+      el.style.color = isError ? '#ef4444' : 'var(--subtext)';
     }
   };
 
-  const updatevmui = () => {
+  const updateVmUi = () => {
     const cur = document.getElementById('vm-current');
     const lat = document.getElementById('vm-latest');
-    if (cur) cur.textContent = getknownversion() || '—';
-    if (lat) lat.textContent = latestversion || '—';
+    if (cur) cur.textContent = getKnownVer() || '—';
+    if (lat) lat.textContent = latestVer || '—';
   };
 
-  const armonlineretry = () => {
+  const retryOnline = () => {
     window.addEventListener('online', function handler() {
       window.removeEventListener('online', handler);
-      checkforupdates();
+      checkUpdates();
     });
   };
 
-  const log = (msg, iserror) => {
-    const fn = iserror ? console.warn : console.log;
+  const log = (msg, isError) => {
+    const fn = isError ? console.warn : console.log;
     fn.call(console, '[update] ' + msg);
   };
 
-  const performforcereinstall = async () => {
-    setbanner('Reinstalling…', {});
-    setvmstatus('Reinstalling…', false);
+  const forceReinstall = async () => {
+    setBanner('Reinstalling…', {});
+    setVmStatus('Reinstalling…', false);
     try {
       if ('serviceWorker' in navigator) {
         const regs = await navigator.serviceWorker.getRegistrations();
@@ -955,10 +946,10 @@
     location.reload();
   };
 
-  const triggerswupdate = async () => {
-    if (!('serviceWorker' in navigator)) { performforcereinstall(); return; }
-    const reg = swreg || await navigator.serviceWorker.getRegistration();
-    if (!reg) { performforcereinstall(); return; }
+  const triggerSwUpdate = async () => {
+    if (!('serviceWorker' in navigator)) { forceReinstall(); return; }
+    const reg = swReg || await navigator.serviceWorker.getRegistration();
+    if (!reg) { forceReinstall(); return; }
 
     if (reg.waiting) { reg.waiting.postMessage({ type: 'SKIP_WAITING' }); return; }
 
@@ -983,22 +974,22 @@
       }
     }
 
-    performforcereinstall();
+    forceReinstall();
   };
 
-  const checkforupdates = async (manual) => {
-    if (checkinprogress) return;
-    checkinprogress = true;
-    setvmstatus('Checking…', false);
+  const checkUpdates = async (manual) => {
+    if (checking) return;
+    checking = true;
+    setVmStatus('Checking…', false);
     log('checking for updates…');
 
     if (!navigator.onLine) {
-      const offlinemsg = 'Checking for updates failed due to network issues.';
-      if (manual) setbanner(offlinemsg, { autoHideMs: 4000 });
-      setvmstatus(offlinemsg, true);
-      log(offlinemsg, true);
-      checkinprogress = false;
-      armonlineretry();
+      const offlineMsg = 'Checking for updates failed due to network issues.';
+      if (manual) setBanner(offlineMsg, { autoHideMs: 4000 });
+      setVmStatus(offlineMsg, true);
+      log(offlineMsg, true);
+      checking = false;
+      retryOnline();
       return;
     }
 
@@ -1007,78 +998,78 @@
       if (!res.ok) throw new Error('HTTP ' + res.status);
       const text = (await res.text()).trim();
       if (!text) throw new Error('Empty version file');
-      latestversion = text;
-      updatevmui();
+      latestVer = text;
+      updateVmUi();
 
-      const known = getknownversion();
+      const known = getKnownVer();
       if (!known) {
-        setknownversion(text);
-        setvmstatus('Up to date', false);
+        setKnownVer(text);
+        setVmStatus('Up to date', false);
         log('first run — recorded version ' + text);
-        updatevmui();
-        checkinprogress = false;
+        updateVmUi();
+        checking = false;
         return;
       }
       if (known === text) {
-        setvmstatus('Up to date', false);
+        setVmStatus('Up to date', false);
         log('up to date (' + text + ')');
-        checkinprogress = false;
+        checking = false;
         return;
       }
 
-      setknownversion(text);
-      setvmstatus('Updating to ' + text + '…', false);
+      setKnownVer(text);
+      setVmStatus('Updating to ' + text + '…', false);
       log('update available — ' + known + ' → ' + text);
-      await triggerswupdate();
+      await triggerSwUpdate();
     } catch (err) {
       const msg = navigator.onLine
         ? 'Checking for updates failed: ' + (err.message || 'unknown error')
         : 'Checking for updates failed due to network issues.';
-      if (manual) setbanner(msg, { autoHideMs: 5000 });
-      setvmstatus(msg, true);
+      if (manual) setBanner(msg, { autoHideMs: 5000 });
+      setVmStatus(msg, true);
       log(msg, true);
-      armonlineretry();
-      checkinprogress = false;
+      retryOnline();
+      checking = false;
     }
   };
 
-  if (dismissbtn) dismissbtn.onclick = hidebanner;
+  if (dismissBtn) dismissBtn.onclick = hideBanner;
 
   if ('serviceWorker' in navigator && !/[?&]reset=1/.test(location.search)) {
-    const hadcontrolleratload = !!navigator.serviceWorker.controller;
+    const hadController = !!navigator.serviceWorker.controller;
     navigator.serviceWorker.addEventListener('controllerchange', () => {
-      if (!hadcontrolleratload) return;
+      if (!hadController) return;
       if (reloading) return;
       reloading = true;
       location.reload();
     });
     window.addEventListener('load', () => {
       navigator.serviceWorker.register('./sw.js', { updateViaCache: 'none' })
-        .then(reg => { swreg = reg; })
+        .then(reg => { swReg = reg; })
         .catch(err => { console.warn('[SW] registration failed:', err); });
     });
   }
 
-  const wiresettingsbuttons = () => {
-    const checkbtn = document.getElementById('vm-check');
-    const forcebtn = document.getElementById('vm-force');
-    if (checkbtn) checkbtn.onclick = () => { checkforupdates(true); };
-    if (forcebtn) forcebtn.onclick = () => {
+  const wireSettingsBtns = () => {
+    const checkBtn = document.getElementById('vm-check');
+    const forceBtn = document.getElementById('vm-force');
+    if (checkBtn) checkBtn.onclick = () => { checkUpdates(true); };
+    if (forceBtn) forceBtn.onclick = () => {
       const msg = 'This will reset everything to defaults: your settings, uploaded backgrounds and videos, custom fonts, and the offline cache. The page will reload with a clean state afterward.';
-      if (typeof showconfirm === 'function') {
-        showconfirm('Force reinstall?', msg, performforcereinstall);
+      if (typeof showConfirm === 'function') {
+        showConfirm('Force reinstall?', msg, forceReinstall);
       } else if (confirm(msg)) {
-        performforcereinstall();
+        forceReinstall();
       }
     };
-    updatevmui();
+    updateVmUi();
   };
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', wiresettingsbuttons);
-  else wiresettingsbuttons();
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', wireSettingsBtns);
+  else wireSettingsBtns();
 
-  window.checkforupdates = checkforupdates;
-  window.updatevmui = updatevmui;
-  window.addEventListener('load', () => { setTimeout(checkforupdates, 200); });
+  window.checkUpdates = checkUpdates;
+  window.updateVmUi = updateVmUi;
+  window.addEventListener('load', () => { setTimeout(checkUpdates, 200); });
 })();
 </script>
 </body>
