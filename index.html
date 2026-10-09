@@ -172,6 +172,10 @@
 <div id="modal-settings" class="modal-overlay">
  <div class="modal-box">
   <div class="tabs-col" id="tab-nav">
+   <div class="srch-wrap">
+    <input type="text" id="pref-search" placeholder="Search settings…" autocomplete="off">
+    <button type="button" class="srch-clear" id="btn-srch-clear" aria-label="Clear search"><i class="fa-solid fa-xmark"></i></button>
+   </div>
    <div class="tab-btn active" data-tab="tab-gen"><i class="fa-solid fa-house fa-fw"></i> General</div>
    <div class="tab-btn" data-tab="tab-app"><i class="fa-solid fa-palette fa-fw"></i> Appearance</div>
    <div class="tab-btn" data-tab="tab-workspace"><i class="fa-solid fa-table-cells-large fa-fw"></i> Layout</div>
@@ -334,6 +338,7 @@
    </div>
 
    <div class="tab-pane" id="tab-wid">
+    <button class="btn btn-primary btn-full" id="btn-enter-studio" style="margin-bottom:14px;"><i class="fa-solid fa-sliders"></i> Enter Studio &amp; Customize Widgets</button>
     <div class="set-card">
      <label class="set-label"><i class="fa-regular fa-clock"></i> Clock</label>
      <div class="toggle-row"><span>Show Clock</span><label class="switch"><input type="checkbox" id="pref-clock-show"><span class="slider"></span></label></div>
@@ -418,9 +423,9 @@
         <span id="fallback-label">Use DuckDuckGo API as a fallback if Google doesn't work</span>
         <label class="switch"><input type="checkbox" id="pref-iconapi-fallback" checked><span class="slider"></span></label>
      </div>
-    </div>
-
    </div>
+   </div>
+  <div id="search-results"></div>
   </div>
 
   <div class="modal-bottom">
@@ -452,16 +457,26 @@
     </div>
 </div>
 
-<div id="modal-ql-shortcuts" class="modal-overlay">
-    <div class="modal-box" style="width:560px; max-width:94vw; height:auto; max-height:80vh; padding:0; display:flex; flex-direction:column; grid-template-columns:none;">
-        <div style="padding:18px 22px; border-bottom:1px solid #302f38; display:flex; justify-content:space-between; align-items:center;">
-            <div style="font-weight:600; font-size:1rem; color:#fbfbff;">Quick Links Shortcut Keys</div>
-            <button class="btn" id="btn-close-ql-shortcuts" style="padding:6px 10px;"><i class="fa-solid fa-xmark"></i></button>
+<div id="modal-studio-welcome" class="modal-overlay" style="z-index:400;">
+    <div class="modal-box" style="width:400px; max-width:94vw; height:auto; padding:22px; display:block; grid-template-columns:none;">
+        <h3 style="margin:0 0 14px; font-size:1.15rem; color:var(--text);">Welcome!!</h3>
+        <p style="margin:0 0 18px; color:var(--subtext); font-size:.88rem; line-height:1.55;">Here, you can customise all the widgets (clock, search box and quick links). You can switch between studios (e.g. from the search box to the clock) at the top left. When you have finished editing, click the 'Done' button to save your changes instead of clicking the X icon in the top right corner.</p>
+        <div style="display:flex; justify-content:flex-end;">
+            <button class="btn btn-primary" id="btn-studio-welcome-ok">OKAY</button>
         </div>
-        <p style="padding:0 22px; margin:14px 0 0; font-size:.8rem; color:#a09fa9; line-height:1.4;">Click a field and press your key combination. Press Escape to clear a shortcut.</p>
-        <div id="ql-shortcuts-list" style="padding:14px 22px 18px; overflow-y:auto; flex:1; display:flex; flex-direction:column; gap:8px;"></div>
-        <div id="qlsc-conflicts" style="padding:0 22px 12px; font-size:.78rem; color:#ef4444; line-height:1.4;"></div>
-        <div style="padding:14px 22px; border-top:1px solid #302f38; display:flex; justify-content:flex-end;">
+    </div>
+</div>
+
+<div id="modal-ql-shortcuts" class="modal-overlay">
+    <div class="modal-box" style="width:520px; max-width:94vw; height:auto; max-height:80vh; padding:0; display:flex; flex-direction:column; grid-template-columns:none;">
+        <div class="qlsc-header">
+            <div class="qlsc-title"><i class="fa-solid fa-keyboard"></i><span>Quick Links Shortcut Keys</span></div>
+            <button class="x-btn" id="btn-close-ql-shortcuts" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <p class="qlsc-hint">Click a field and press your key combination. Press Escape to clear a shortcut.</p>
+        <div id="ql-shortcuts-list" style="padding:14px 20px 18px; overflow-y:auto; flex:1; display:flex; flex-direction:column; gap:8px;"></div>
+        <div id="qlsc-conflicts" class="qlsc-conflicts"></div>
+        <div class="qlsc-footer">
             <button class="btn btn-primary" id="btn-save-ql-shortcuts">Done</button>
         </div>
     </div>
@@ -478,9 +493,10 @@
     <button class="studio-tab" data-studio="studio-links">Links</button>
    </div>
    <div style="display:flex; gap:8px; align-items:center;">
-    <button class="btn btn-studio-preview">Preview Fullscreen</button>
-    <button class="btn btn-studio-preview-live">Preview &amp; Edit</button>
-    <button class="btn" id="studio-clock-close">Done</button>
+   <button class="btn btn-studio-preview">Preview Fullscreen</button>
+   <button class="btn btn-studio-preview-live">Preview &amp; Edit</button>
+   <button class="btn" id="studio-clock-reset" title="Reset clock to defaults"><i class="fa-solid fa-rotate-left"></i></button>
+   <button class="btn" id="studio-clock-close">Done</button>
    </div>
   </div>
   <div id="studio-clock-mount" style="transform:scale(var(--clock-scale)); text-align:center;"></div>
@@ -604,15 +620,16 @@
   <div id="studio-search-bg" class="studio-preview-bg"></div>
   <div id="studio-search-overlay" class="studio-preview-overlay"></div>
   <div class="studio-topbar">
-   <div class="studio-tabs">
-    <button class="studio-tab" data-studio="studio-clock">Clock</button>
-    <button class="studio-tab" data-studio="studio-search">Search</button>
-    <button class="studio-tab" data-studio="studio-links">Links</button>
-   </div>
-   <div style="display:flex; gap:8px; align-items:center;">
-    <button class="btn btn-studio-preview">Preview Fullscreen</button>
-    <button class="btn btn-studio-preview-live">Preview &amp; Edit</button>
-    <button class="btn" id="studio-search-close">Done</button>
+  <div class="studio-tabs">
+   <button class="studio-tab" data-studio="studio-clock">Clock</button>
+   <button class="studio-tab" data-studio="studio-search">Search</button>
+   <button class="studio-tab" data-studio="studio-links">Links</button>
+  </div>
+  <div style="display:flex; gap:8px; align-items:center;">
+   <button class="btn btn-studio-preview">Preview Fullscreen</button>
+   <button class="btn btn-studio-preview-live">Preview &amp; Edit</button>
+   <button class="btn" id="studio-search-reset" title="Reset search box to defaults"><i class="fa-solid fa-rotate-left"></i></button>
+   <button class="btn" id="studio-search-close">Done</button>
    </div>
   </div>
   <div id="studio-search-mount" style="width:640px; max-width:90vw"></div>
@@ -732,15 +749,16 @@
   <div id="studio-links-bg" class="studio-preview-bg"></div>
   <div id="studio-links-overlay" class="studio-preview-overlay"></div>
   <div class="studio-topbar">
-   <div class="studio-tabs">
-    <button class="studio-tab" data-studio="studio-clock">Clock</button>
-    <button class="studio-tab" data-studio="studio-search">Search</button>
-    <button class="studio-tab" data-studio="studio-links">Links</button>
-   </div>
-   <div style="display:flex; gap:8px; align-items:center;">
-    <button class="btn btn-studio-preview">Preview Fullscreen</button>
-    <button class="btn btn-studio-preview-live">Preview &amp; Edit</button>
-    <button class="btn" id="studio-links-close">Done</button>
+  <div class="studio-tabs">
+   <button class="studio-tab" data-studio="studio-clock">Clock</button>
+   <button class="studio-tab" data-studio="studio-search">Search</button>
+   <button class="studio-tab" data-studio="studio-links">Links</button>
+  </div>
+  <div style="display:flex; gap:8px; align-items:center;">
+   <button class="btn btn-studio-preview">Preview Fullscreen</button>
+   <button class="btn btn-studio-preview-live">Preview &amp; Edit</button>
+   <button class="btn" id="studio-links-reset" title="Reset quick links to defaults"><i class="fa-solid fa-rotate-left"></i></button>
+   <button class="btn" id="studio-links-close">Done</button>
    </div>
   </div>
   <div id="studio-links-mount" style="width:720px; max-width:92vw"></div>

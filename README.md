@@ -52,4 +52,4 @@ Fully customizable to make it *yours*.
   <img src="https://raw.githubusercontent.com/etanny/startpage-presets/refs/heads/main/night-drive.png" alt="Night Drive Preset" width="800" />
 </div>
 
-Download configuration files for these here:
+Download configuration files for these here: [Preset Files Page](https://etanny.github.io/startpage-presets/)
