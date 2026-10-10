@@ -3,7 +3,6 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Anoxle - Startpage</title>
     <meta name="description" content="Highly customizable. Beautifully minimal. Your personal new tab for a cleaner, more focused web.">
@@ -283,18 +282,12 @@
    </div>
 
    <div class="tab-pane" id="tab-app">
-    <p style="font-size:.82rem; color:#a2a1ab; line-height:1.5; margin:0 0 14px 2px;">Want to change how a specific widget looks? Open its studio from <span class="tab-jump" data-tab="tab-wid">Widgets &amp; Links</span>. This tab is just for the global theme and background.</p>
+    <p style="font-size:.82rem; color:#a2a1ab; line-height:1.5; margin:0 0 14px 2px;">Want to change how a specific widget looks? Open its studio from <span class="tab-jump" data-tab="tab-wid">Widgets &amp; Links</span>. This tab handles the background image and the accent color for the Preferences button and help bar.</p>
     <div class="set-card">
-     <label class="set-label">Theme & Background</label>
+     <label class="set-label">Background & Accent</label>
      <div class="grid-2">
-      <div><span class="field-label">Color Preset</span><select id="pref-theme"><option value="theme-overcast">Overcast</option><option value="theme-mocha" disabled>Catppuccin Mocha</option><option value="theme-dark" disabled>Dark</option><option value="theme-black" disabled>OLED Black</option><option value="theme-light" disabled>Light</option><option value="theme-modern" disabled>Modern Clean</option><option value="theme-custom">Custom Colors</option></select></div>
-      <div><span class="field-label">Accent Color</span><div class="flex-row"><input type="text" id="pref-accent" placeholder="#cba6f7" style="flex:1; min-width:0"><input type="color" id="pref-accent-picker" value="#9A62DA" style="width:38px; height:38px; padding:2px; flex-shrink:0"></div></div>
-     </div>
-     <div id="box-custom" class="grid-4" style="display:none; margin-top:14px;">
-        <div><span class="set-sublabel">BG</span><div class="flex-row"><input type="text" id="pref-c-bg" style="flex:1; min-width:0"><input type="color" id="pref-c-bg-picker" value="#0a0a0a" style="width:36px; height:38px; padding:2px; flex-shrink:0"></div></div>
-        <div><span class="set-sublabel">Text</span><div class="flex-row"><input type="text" id="pref-c-txt" style="flex:1; min-width:0"><input type="color" id="pref-c-txt-picker" value="#ffffff" style="width:36px; height:38px; padding:2px; flex-shrink:0"></div></div>
-        <div><span class="set-sublabel">Accent</span><div class="flex-row"><input type="text" id="pref-c-acc" style="flex:1; min-width:0"><input type="color" id="pref-c-acc-picker" value="#9A62DA" style="width:36px; height:38px; padding:2px; flex-shrink:0"></div></div>
-        <div><span class="set-sublabel">Border</span><div class="flex-row"><input type="text" id="pref-c-bor" style="flex:1; min-width:0"><input type="color" id="pref-c-bor-picker" value="#1a1a1a" style="width:36px; height:38px; padding:2px; flex-shrink:0"></div></div>
+      <div><span class="field-label">Accent Color</span><div class="flex-row"><input type="text" id="pref-accent" placeholder="#c0bfbc" style="flex:1; min-width:0"><input type="color" id="pref-accent-picker" value="#c0bfbc" style="width:38px; height:38px; padding:2px; flex-shrink:0"></div></div>
+      <div><span class="field-label">What It Colors</span><p style="font-size:.78rem; color:#9f9ea8; line-height:1.5; margin:0;">Only the Preferences button and the help bar key hints. Leave empty for the default look.</p></div>
      </div>
      <div class="grid-2" style="margin-top:14px">
       <div><span class="field-label">Background Image URL</span><input type="text" id="pref-bgurl" placeholder="https://..."></div>
